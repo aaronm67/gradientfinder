@@ -20,25 +20,24 @@
 
         return colors;
     }
-	
-	function calculateStops(colors) {
-		return [];
-	}
-	
-	function getCssGrad(stops, len) {
-		var grad = "-webkit-linear-gradient(left," + _.map(stops, function (s) {
-			var pct = Math.ceil((s.idx / len) * 100);
-			var color = s.color.toRgbString();
-			return color + " " + pct + "%";
-		}).join(",") + ")";
-	}	
-	
-	function findGrad(dataurl) {
+
+    function calculateStops(colors) {
+        return [];
+    }
+
+    function getCssGrad(stops, len) {
+        var grad = "-webkit-linear-gradient(left," + _.map(stops, function (s) {
+            var pct = Math.ceil((s.idx / len) * 100);
+            var color = s.color.toRgbString();
+            return color + " " + pct + "%";
+        }).join(",") + ")";
+    }
+
+    function findGrad(dataurl) {
         var image = new Image();
         image.src = dataurl;
         image.onload = function () {
-			var img = this;
-		
+            var img = this;
             var canvas = $("<canvas>")[0];
             var ctx = canvas.getContext("2d");
             canvas.width = img.width;
@@ -47,8 +46,8 @@
             ctx.drawImage(img, 0, 0);
             var colors = getColorArray(ctx);
             var stops = calculateStops(colors[0]);
-            var len = img.width - 1;			
-			return getCssGrad(stops, len);
+            var len = img.width - 1;
+            return getCssGrad(stops, len);
         };
     }
 })();

@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script type="text/javascript">
-			window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
-		</script>	
-		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="filereader.js"></script>
-		<script type="text/javascript" src="tinycolor.js"></script>
-		<script type="text/javascript" src="imgtocss.js"></script>
-		<link rel="stylesheet" href="style.css" type="text/css">
-		<script type="text/javascript">
-			$(function() {
-				var opts = {
-					readAsMap: {
-						'.*': 'DataURL'
-					},
-					dragClass: "filedrop",
-					on: {
-						load: function (e, file) {
-							log(e, file);
-							var data = e.target.result;
-							//findGrad(data);
-						}
-					}
-				};
-				$(".dropper").fileReaderJS(opts).fileClipboard(opts);
-			});
-		</script>
-	</head>
-	<body>
-		<div class="dropper"></div>
-	</body>
+    <head>
+        <script type="text/javascript">
+            // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+        </script>
+        <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="filereader.js"></script>
+        <script type="text/javascript" src="tinycolor.js"></script>
+        <script type="text/javascript" src="imgtocss.js"></script>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script type="text/javascript">
+            $(function() {
+                var opts = {
+                    readAsMap: {
+                        '.*': 'DataURL'
+                    },
+                    dragClass: "filedrop",
+                    on: {
+                        load: function (e, file) {
+                            log(e, file);
+                            var data = e.target.result;
+                            //findGrad(data);
+                        }
+                    }
+                };
+                $(".dropper").fileReaderJS(opts).fileClipboard(opts);
+            });
+        </script>
+    </head>
+    <body>
+        <div class="dropper"></div>
+    </body>
 </html>
 
 
