@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="filereader.js"></script>
+		<script type="text/javascript" src="imgtocss.js"></script>
+		<link rel="stylesheet" href="style.css" type="text/css">
+			<script type="text/javascript">
+				$(function () {
+					$(".dropper").foliotek_filereader(
+						{
+							readAsMap: {
+								'.*': 'DataURL'
+							},
+							dragClass: "filedrop",
+							on: {
+								load: function (e, file) {
+									var data = e.target.result;
+									findGrad(data);
+								}
+							}
+						}
+					);
+				});
+			</script>
+	</head>
+	<body>
+		<div class="dropper"></div>
+
+	</body>
+</html>
+
+
