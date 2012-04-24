@@ -1,10 +1,10 @@
 (function(exports) {
     function rgb_avg(a, b) {
-        return new {
+        return {
             r: (a.r + b.r) / 2,
             g: (a.g + b.g) / 2,
             b: (a.b + b.b) / 2                            
-        }
+        };
     }
     
     function rgb_equal(a, b, tol) {
@@ -24,66 +24,78 @@
     }
     
     function arrayToRgb(arr) {
+        if (!arr) {
+            //return;
+        }
+    
         var ret = {
-            r: array[0],
-            g: array[1],
-            b: array[2]        
+            r: arr[0],
+            g: arr[1],
+            b: arr[2]        
         };
         
-        if (array.length == 4) {
-            ret.a = array[3];
+        if (arr.length == 4) {
+            ret.a = arr[3];
         }
 
         return ret;
     };
     
+    function getPixel(arr, x, y) {
+        return arrayToRgb(arr[y][x]);
+    }
+
     function calculateGradient(arr) {
         var ret = [];
         var height = arr.length;
         var width = arr[0].length;                        
-        var t1 = arr[0][0];
-        var tr = arr[0][width - 1];
-        var b1 = arr[height - 1][0];
-        var br = arr[height - 1][width - 1];  
-        
-        log(t1, tr, b1, br);
+        var tl = getPixel(arr, 0, 0);
+        var tr = getPixel(arr, width - 1, 0);
+        var bl = getPixel(arr, 0, height - 1);
+        var br = getPixel(arr, width - 1, height - 1);  
+      
+        var grad_len;
+        var grad;
+        var mid;
+        var grad_start;               
 
-        // horizontal gradient
-        if (rgb_equal(t1, tr)) {
-            //g->start = top;
-            //l=image->height;
-            //if(l % 2 == 1) {
-                //mid = getpixel(image, 0, l/2);
-            //}
-            //else {
-                //mid = rgb_avg(getpixel(image, 0, l/2), getpixel(image, 0, l/2-1));
-            //}
+        // vertical gradient -- row[0][0] == row[0][height]
+        if (rgb_equal(tl, tr)) {
+            grad_start = "top";
+            grad_len = height;
+            if (grad_len % 2 === 0) {
+                mid = getPixel(arr, 0, grad_len / 2);
+            }
+            else {                            
+                mid = rgb_avg(getPixel(arr, 0, grad_len / 2), getPixel(image, 0, (grad_len / 2) - 1));
+            }
         }
-        // vertical gradient
-        else if(rgb_equal(tl, bl)) {
-            //g->start = left;
-            //l=image->width;
-            //if(l % 2 == 1) {
-                //mid = getpixel(image, l/2, 0);
-            //}
-            //else {
-                //mid = rgb_avg(getpixel(image, l/2, 0), getpixel(image, l/2-1, 0));
-            //}
+        // horizontal gradient
+        else if (rgb_equal(tl, bl)) {
+            grad_start = "left";
+            grad_len = width;            
+            if (grad_len % 2 === 0) {
+                mid = getPixel(arr, grad_len / 2, 0);
+            }
+            else {          
+                mid = rgb_avg(getPixel(arr, Math.floor(grad_len / 2), 0), getPixel(arr, Math.ceil(grad_len / 2), 0));
+            }
         }
         // ltr diag
         else if(rgb_equal(tr, bl) && !rgb_equal(tl, br)) {
-            //g->start = top_left;
-            //l=image->height;
+            grad_start = "top_left";
+            grad_len = height;
         }
         // rtl diag
         else if(rgb_equal(tl, br) && !rgb_equal(tr, bl)) {
-            //g->start = top_right;
-            //l=image->height;
-            //tl = tr;
-            //br = bl;
+            grad_start = "top_right";
+            grad_len = height;
+            tl = tr;
+            br = bl;
         }
         
-        
+        log(grad_len, grad, mid, grad_start);
+                
         //g->colors = (rgb *)calloc(2, sizeof(rgb));
         //g->colors[0] = tl;
         //g->colors[1] = br;
