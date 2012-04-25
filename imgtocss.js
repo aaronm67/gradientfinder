@@ -123,7 +123,8 @@
             var endpx = Math.min(end, start + add);        
             var endColor = getPixel(arr, endpx);            
             var average = Color.getAvg(startColor, endColor);            
-            var mid = getMid(arr, endpx);                        
+            var mid = getMid(arr, endpx);              
+                        
             if (!average.equals(mid)) { 
                 return getExpectedStop(arr, start, add - 1);
             }
@@ -158,9 +159,10 @@
         }
         else {        
             var endStop = getExpectedStop(arr);
-            log(endStop);
-            var newarr = arr.slice(endStop); 
-            return stops.concat(getStops(newarr));
+            while (endStop < arr.length) {
+                var newarr = arr.slice(endStop); 
+                return stops.concat(getStops(newarr));            
+            }
         }                
     }
 
@@ -185,7 +187,10 @@
                 });
             }
         });
-        
+               
+        if (ret.length > 2) {       
+            log(ret);
+        }
         return new Gradient(ret, gradobj.start);                
     }
     

@@ -44,7 +44,7 @@
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
-                "0": "rgb(0, 0, 0)",
+                "0": random(),
                 "0.22": random(),
                 "0.47": random(),
                 "0.75": random(),
@@ -148,7 +148,7 @@
                 equal(calcgrad.start, grad.start);                
                 calcgrad.stops.forEach(function(s) {                    
                     var expected = grad.stops[s.idx];
-                    equal(s.color.toString(), expected);
+                    equal(s.color.toString(), expected, "Stop at Index " + s.idx);
                 });                   
             });                        
         }
