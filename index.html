@@ -16,13 +16,24 @@
         <link rel="stylesheet" href="style.css" type="text/css">
         <link rel="stylesheet" href="qunit.css" type="text/css">
 <script type="text/javascript">
+    function random() {
+        var f = function() {
+            return Math.floor(Math.random() * 255);
+        }
+    
+        return tinycolor({
+            r: f(),
+            g: f(),
+            b: f()        
+        }).toString();
+    }
 
     var gradTests = {
         singleStop: {
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
-                "0": "rgb(0, 0, 0)"
+                "0": random()
             }
         },
     
@@ -30,37 +41,30 @@
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
-                "0": "rgb(0, 0, 0)",
-                "1": "rgb(255, 255, 255)"
+                "0": random(),
+                "1": random()
             }
-        },/*        
+        },
         multiVertical: {
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
                 "0": "rgb(0, 0, 0)",
-                "0.21717171717171718": "rgb(255, 0, 232)",
-                "0.4696969696969697": "rgb(59, 42, 108)",
-                "0.7474747474747475": "rgb(68, 0, 0)",
-                "1": "rgb(255, 255, 255)"
+                "0.22": random(),
+                "0.47": random(),
+                "0.75": random(),
+                "1": random()
             }
-        },*/
+        },
         singleHorizontal: {
             start: "left",
             param: [0, 0, 1, 0],
             stops: {
-                "0": "rgb(0, 0, 0)",
-                "1": "rgb(255, 255, 255)"
+                "0": random(),
+                "1": random()
             }               
-        },
-        singleColor: {
-            start: "left",
-            param: [0, 0, 1, 0],
-            stops: {
-                "0": "rgb(0, 255, 0)",
-                "1": "rgb(255, 0, 0)"
-            }               
-        }/*,               
+        }
+         /*,              
         multiHorizontal: {
             start: "left",
             param: [1, 0, 0, 0 ],
@@ -131,7 +135,7 @@
                                                 
                 for (idx in grad.stops) {
                     if (grad.stops.hasOwnProperty(idx)) {
-                        log(idx, grad.stops[idx]);
+                        //log(idx, grad.stops[idx]);
                         gradient.addColorStop(parseFloat(idx), grad.stops[idx]);
                     }
                 }
@@ -146,14 +150,11 @@
         function testGrad(name, grad, canvas) {
             var calcgrad = findGradFromCanvas(canvas);                                        
             test(name, function() {
-                equal(calcgrad.start, grad.start);
-                equal(calcgrad.stops.length, grad.stops.length);
-                
-                for (var idx in calcgrad.stops) {
-                    if (calcgrad.stops.hasOwnProperty(idx)) {
-                        equal(calcgrad.stops[idx], grad.stops[idx], idx);
-                    }
-                }                                                
+                equal(calcgrad.start, grad.start);                
+                calcgrad.stops.forEach(function(s) {                    
+                    var expected = grad.stops[s.idx];
+                    equal(s.color.toString(), expected);
+                });                   
             });                        
         }
     });
