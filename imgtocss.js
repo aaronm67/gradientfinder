@@ -1,4 +1,9 @@
-(function(exports) {
+(function(exports) {    
+    function Gradient(stops, start) {
+        this.stops = stops;
+        this.start = start;
+    }
+
     function rgb_avg(a, b) {
         return {
             r: (a.r + b.r) / 2,
@@ -24,10 +29,6 @@
     }
     
     function arrayToRgb(arr) {
-        if (!arr) {
-            //return;
-        }
-    
         var ret = {
             r: arr[0],
             g: arr[1],
@@ -49,10 +50,10 @@
         var ret = [];
         var height = arr.length;
         var width = arr[0].length;                        
-        var tl = getPixel(arr, 0, 0);
-        var tr = getPixel(arr, width - 1, 0);
-        var bl = getPixel(arr, 0, height - 1);
-        var br = getPixel(arr, width - 1, height - 1);  
+        var top_left = getPixel(arr, 0, 0);
+        var top_right = getPixel(arr, width - 1, 0);
+        var bottom_left = getPixel(arr, 0, height - 1);
+        var bottom_right = getPixel(arr, width - 1, height - 1);  
       
         var grad_len;
         var grad;
@@ -60,7 +61,7 @@
         var grad_start;               
 
         // vertical gradient -- row[0][0] == row[0][height]
-        if (rgb_equal(tl, tr)) {
+        if (rgb_equal(top_left, top_right)) {
             grad_start = "top";
             grad_len = height;
             if (grad_len % 2 === 0) {
@@ -71,7 +72,7 @@
             }
         }
         // horizontal gradient
-        else if (rgb_equal(tl, bl)) {
+        else if (rgb_equal(top_left, bottom_left)) {
             grad_start = "left";
             grad_len = width;            
             if (grad_len % 2 === 0) {
@@ -82,30 +83,32 @@
             }
         }
         // ltr diag
-        else if(rgb_equal(tr, bl) && !rgb_equal(tl, br)) {
+        else if(rgb_equal(top_right, bottom_left) && !rgb_equal(top_left, bottom_right)) {
             grad_start = "top_left";
             grad_len = height;
         }
         // rtl diag
-        else if(rgb_equal(tl, br) && !rgb_equal(tr, bl)) {
+        else if(rgb_equal(top_left, bottom_right) && !rgb_equal(top_right, bottom_left)) {
             grad_start = "top_right";
             grad_len = height;
-            tl = tr;
-            br = bl;
+            top_left = top_right;
+            bottom_right = bottom_left;
         }
-        
-        log(grad_len, grad, mid, grad_start);
+
+        var stops = {};
+        stops[0] = top_left;
+        stops[grad_len] = bottom_right;        
                 
-        //g->colors = (rgb *)calloc(2, sizeof(rgb));
-        //g->colors[0] = tl;
-        //g->colors[1] = br;
-        //g->ncolors = 2;
-        
         // If it's a diagonal, we only support 2 colours 
         // If it's horizontal or vertical and the middle colour is the avg of the ends, then
         // we only need two colours 
         //Also, if the image is less than 3 pixels in the direction of the gradient, then you
         //  really cannot have more than 2 colours
+        if (grad_len < 3 || rgb_equal(mid, rgb_avg(top_left, bottom_right))) {
+            return new Gradient(stops, grad_start);
+        }
+        
+        return [];
                 
         //if(g->start == top_left || g->start == top_right || l < 3
             //|| rgb_equal(mid, rgb_avg(tl, br))) {
@@ -228,7 +231,7 @@
             ctx.drawImage(img, 0, 0);
             var colors = getColorArray(ctx);
             var stops = calculateGradient(colors);           
-            return "";
+            log(stops);
             //var len = img.width - 1;
             //return getCssGrad(stops, len);
         };
