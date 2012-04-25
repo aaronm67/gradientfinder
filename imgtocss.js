@@ -1,5 +1,5 @@
 (function(exports) {    
-    function Gradient(stops, start) {
+    function Gradient(stops, start, length) {
         this.stops = stops;
         this.start = start;
     }
@@ -35,7 +35,7 @@
             b: arr[2]        
         };
         
-        if (arr.length == 4) {
+        if (arr.length == 4 && arr[3] !== 255) {
             ret.a = arr[3];
         }
 
@@ -53,7 +53,7 @@
         var top_left = getPixel(arr, 0, 0);
         var top_right = getPixel(arr, width - 1, 0);
         var bottom_left = getPixel(arr, 0, height - 1);
-        var bottom_right = getPixel(arr, width - 1, height - 1);  
+        var bottom_right = getPixel(arr, width - 1, height - 1);        
       
         var grad_len;
         var grad;
@@ -84,11 +84,13 @@
         }
         // ltr diag
         else if(rgb_equal(top_right, bottom_left) && !rgb_equal(top_left, bottom_right)) {
+            log("ltr");
             grad_start = "top_left";
             grad_len = height;
         }
         // rtl diag
         else if(rgb_equal(top_left, bottom_right) && !rgb_equal(top_right, bottom_left)) {
+            log("rtl");
             grad_start = "top_right";
             grad_len = height;
             top_left = top_right;
@@ -96,14 +98,17 @@
         }
 
         var stops = {};
-        stops[0] = top_left;
-        stops[grad_len] = bottom_right;        
-                
+        stops[0] = tinycolor(top_left);
+        
+        if (!rgb_equal (top_left, bottom_right)) {
+            stops[1] = tinycolor(bottom_right);        
+        }        
+
         // If it's a diagonal, we only support 2 colours 
         // If it's horizontal or vertical and the middle colour is the avg of the ends, then
         // we only need two colours 
         //Also, if the image is less than 3 pixels in the direction of the gradient, then you
-        //  really cannot have more than 2 colours
+        //  really cannot have more than 2 colours                
         if (grad_len < 3 || rgb_equal(mid, rgb_avg(top_left, bottom_right))) {
             return new Gradient(stops, grad_start);
         }
@@ -217,7 +222,14 @@
             return color + " " + pct + "%";
         }).join(",") + ")";
     }
-
+    
+    function findGradFromCanvas(canvas) {
+        var ctx = canvas.getContext("2d");
+        var colors = getColorArray(ctx);
+        var stops = calculateGradient(colors);           
+        return stops;
+    }
+    
     function findGrad(dataurl) {
         var image = new Image();
         image.src = dataurl;
@@ -227,14 +239,12 @@
             var ctx = canvas.getContext("2d");
             canvas.width = img.width;
             canvas.height = img.height;
-
             ctx.drawImage(img, 0, 0);
-            var colors = getColorArray(ctx);
-            var stops = calculateGradient(colors);           
-            log(stops);
-            //var len = img.width - 1;
-            //return getCssGrad(stops, len);
+            
+            return findGradFromCanvas(canvas);
         };
     }
+    
     exports.findGrad = findGrad;    
+    exports.findGradFromCanvas = findGradFromCanvas;    
 })(window);
