@@ -6,14 +6,9 @@
             window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
         </script>
         <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="filereader.js"></script>
         <script type="text/javascript" src="tinycolor.js"></script>
-        <script type="text/javascript" src="imgtocss.js"></script>
-        
+        <script type="text/javascript" src="../imgtocss.js"></script>        
         <script type="text/javascript" src="qunit.js"></script>
-        
-        
-        <link rel="stylesheet" href="style.css" type="text/css">
         <link rel="stylesheet" href="qunit.css" type="text/css">
 <script type="text/javascript">
     function random() {
@@ -157,23 +152,6 @@
                 });                   
             });                        
         }
-    });
-
-    // 
-    $(function() {
-        var opts = {
-            readAsMap: {
-                '.*': 'DataURL'
-            },
-            dragClass: "filedrop",
-            on: {
-                load: function (e, file) {
-                    var data = e.target.result;
-                    findGrad(data);
-                }
-            }
-        };
-        $(".dropper").fileReaderJS(opts).fileClipboard(opts);
     });
 </script>
 
