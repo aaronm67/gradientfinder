@@ -33,10 +33,10 @@
             r: arr[0],
             g: arr[1],
             b: arr[2]        
-        };
-        
-        if (arr.length == 4 && arr[3] !== 255) {
-            ret.a = arr[3];
+        };        
+
+        if (arr.length == 4) {
+            ret.a = (arr[3] / 255);
         }
 
         return ret;
