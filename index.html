@@ -33,7 +33,7 @@
                 "0": "rgb(0, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        },        
+        },/*        
         multiVertical: {
             start: "top",
             param: [0, 0, 0, 1],
@@ -44,7 +44,7 @@
                 "0.7474747474747475": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        },
+        },*/
         singleHorizontal: {
             start: "left",
             param: [0, 0, 1, 0],
@@ -60,7 +60,7 @@
                 "0": "rgb(0, 255, 0)",
                 "1": "rgb(255, 0, 0)"
             }               
-        },               
+        }/*,               
         multiHorizontal: {
             start: "left",
             param: [1, 0, 0, 0 ],
@@ -109,7 +109,7 @@
                 "0.7474747474747475": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }        
-        }
+        }*/
     };
 
     $(function() {
@@ -151,7 +151,7 @@
                 
                 for (var idx in calcgrad.stops) {
                     if (calcgrad.stops.hasOwnProperty(idx)) {
-                        equal(calcgrad.stops[idx].toRgbString(), grad.stops[idx], idx);
+                        equal(calcgrad.stops[idx], grad.stops[idx], idx);
                     }
                 }                                                
             });                        

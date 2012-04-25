@@ -1,119 +1,142 @@
 (function(exports) {    
+    var Color = function(arr) {               
+        this.r = arr[0];
+        this.g = arr[1];
+        this.b = arr[2];            
+        if (arr.length == 4) {
+            this.a = (arr[3] / 255);
+        }
+    };
+    
+    Color.getAvg = function(a, b) {
+        return new Color([
+            (a.r + b.r) / 2,
+            (a.g + b.g) / 2,
+            (a.b + b.b) / 2    
+        ]);
+    };
+    Color.prototype.equals = function(b, tolerance) {
+       tolerance = tolerance || 2;        
+        if (Math.abs(this.r - b.r) > tolerance) {
+            return false;
+        }
+        if (Math.abs(this.g - b.g) > tolerance) {
+            return false;
+        }
+        if (Math.abs(this.b - b.b) > tolerance) {
+            return false;
+        }
+        return true;
+    };
+    
+    Color.prototype.toString = function() {        
+        return (this.a == 1) ? 
+          "rgb("  + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ")" :
+              "rgba(" + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ", " + this.a + ")";    
+    }
+
     function Gradient(stops, start, length) {
         this.stops = stops;
         this.start = start;
     }
-
-    function rgb_avg(a, b) {
-        return {
-            r: (a.r + b.r) / 2,
-            g: (a.g + b.g) / 2,
-            b: (a.b + b.b) / 2                            
-        };
-    }
-    
-    function rgb_equal(a, b, tol) {
-        tol = tol || 2;
-    
-        if (Math.abs(a.r - b.r) > tol) {
-            return false;
-        }
-        if (Math.abs(a.g - b.g) > tol) {
-            return false;
-        }
-        if (Math.abs(a.b - b.b) > tol) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    function arrayToRgb(arr) {
-        var ret = {
-            r: arr[0],
-            g: arr[1],
-            b: arr[2]        
-        };        
-
-        if (arr.length == 4) {
-            ret.a = (arr[3] / 255);
-        }
-
-        return ret;
-    };
     
     function getPixel(arr, x, y) {
-        return arrayToRgb(arr[y][x]);
-    }
+        if (y === undefined) {
+            return new Color(arr[x]);
+        }        
 
-    function calculateGradient(arr) {
-        var ret = [];
+        return new Color(arr[y][x]);
+    }
+        
+    // get the middle color of a 1 dimensional array
+    function getMid(arr) {
+        var length = arr.length;
+        if (length % 2 === 0) {
+            return getPixel(arr, length / 2);
+        }
+        else {
+            return Color.getAvg(getPixel(arr, length / 2), getPixel(image, (length / 2) - 1));
+        }        
+    } 
+    
+    function getGradientStart(arr) {
         var height = arr.length;
-        var width = arr[0].length;                        
+        var width = arr[0].length;
         var top_left = getPixel(arr, 0, 0);
         var top_right = getPixel(arr, width - 1, 0);
         var bottom_left = getPixel(arr, 0, height - 1);
         var bottom_right = getPixel(arr, width - 1, height - 1);        
-      
-        var grad_len;
-        var grad;
-        var mid;
-        var grad_start;               
 
-        // vertical gradient -- row[0][0] == row[0][height]
-        if (rgb_equal(top_left, top_right)) {
-            grad_start = "top";
-            grad_len = height;
-            if (grad_len % 2 === 0) {
-                mid = getPixel(arr, 0, grad_len / 2);
-            }
-            else {                            
-                mid = rgb_avg(getPixel(arr, 0, grad_len / 2), getPixel(image, 0, (grad_len / 2) - 1));
-            }
+        if (top_left.equals(top_right)) {
+            return "top";
         }
-        // horizontal gradient
-        else if (rgb_equal(top_left, bottom_left)) {
-            grad_start = "left";
-            grad_len = width;            
-            if (grad_len % 2 === 0) {
-                mid = getPixel(arr, grad_len / 2, 0);
-            }
-            else {          
-                mid = rgb_avg(getPixel(arr, Math.floor(grad_len / 2), 0), getPixel(arr, Math.ceil(grad_len / 2), 0));
-            }
+        if (top_left.equals(bottom_left)) {
+            return "left";
         }
-        // ltr diag
-        else if(rgb_equal(top_right, bottom_left) && !rgb_equal(top_left, bottom_right)) {
-            log("ltr");
-            grad_start = "top_left";
-            grad_len = height;
-        }
-        // rtl diag
-        else if(rgb_equal(top_left, bottom_right) && !rgb_equal(top_right, bottom_left)) {
-            log("rtl");
-            grad_start = "top_right";
-            grad_len = height;
-            top_left = top_right;
-            bottom_right = bottom_left;
-        }
-
-        var stops = {};
-        stops[0] = tinycolor(top_left);
         
-        if (!rgb_equal (top_left, bottom_right)) {
-            stops[1] = tinycolor(bottom_right);        
+        return "";
+    }
+    
+    // convert from a 2 dimensional array to a 1 dimensional array of the gradient
+    function getGradientArray(arr) {
+        var height = arr.length;
+        var width = arr[0].length;
+    
+        var top_left = getPixel(arr, 0, 0);
+        var top_right = getPixel(arr, width - 1, 0);
+        var bottom_left = getPixel(arr, 0, height - 1);
+        var bottom_right = getPixel(arr, width - 1, height - 1);        
+        
+        // vertical gradient -- row[0][0] == row[0][height]
+        if (top_left.equals(top_right)) {
+            return arr.map(function(i) {
+                return i[0];
+            });
         }        
-
-        // If it's a diagonal, we only support 2 colours 
-        // If it's horizontal or vertical and the middle colour is the avg of the ends, then
-        // we only need two colours 
-        //Also, if the image is less than 3 pixels in the direction of the gradient, then you
-        //  really cannot have more than 2 colours                
-        if (grad_len < 3 || rgb_equal(mid, rgb_avg(top_left, bottom_right))) {
-            return new Gradient(stops, grad_start);
+        // horizontal gradient
+        if (top_left.equals(bottom_left)) {        
+            return arr[0];
         }
+        
+        return [];        
+    }
+    
+    function getStops(arr) {
+        var stops = {};
+        var start = getPixel(arr, 0);
+        var end = getPixel(arr, arr.length - 1);          
+        
+        stops[0] = start;
+        if (!start.equals(end)) {
+            stops[1] = end;
+        }
+                
+        var actualMid = getMid(arr);
+        var expectedMid = Color.getAvg(start, end);
+        if (actualMid.equals(expectedMid)) {
+            return stops;
+        }
+        else {
+            log("HERE, this shouldn't happen for single stop items");
+        }                
         
         return [];
+    }
+        
+
+    function calculateGradient(arr) {
+        var ret = [];
+        var mid;
+        
+        // 1 dimensional array to calculate gradient across;
+        var grad = getGradientArray(arr);
+        var direction = getGradientStart(arr);        
+        var stops = getStops(grad);     
+        
+        
+        
+        
+        return new Gradient(stops, direction);
                 
         //if(g->start == top_left || g->start == top_right || l < 3
             //|| rgb_equal(mid, rgb_avg(tl, br))) {
@@ -128,6 +151,16 @@
         // - the average of the two ends.  we start at 3 pixels.
         // - if it does, then double the size of the slice and retry (until you reach the end of the image)
         // - if it does not match, then reduce until it does match this is the first stop
+        
+        /*
+        var len = 3;
+        for (var i = 0; i < arr.length; i++) {
+            var c1 = arr[0];
+            var c2 = arr[len];
+            if (!rgbavg(c1, c2) == mid) {
+                stops.concat(return calculateGrad(arr.splice(len)));
+            }            
+        } */       
         
         // min = base = 0;
         // xy[0][g->start] = base;
@@ -247,4 +280,5 @@
     
     exports.findGrad = findGrad;    
     exports.findGradFromCanvas = findGradFromCanvas;    
+    exports.getMid = getMid;
 })(window);
