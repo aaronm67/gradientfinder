@@ -9,11 +9,18 @@
     };
 
     Color.getAvg = function(a, b) {
-        return new Color([
+        var color = [
             (a.r + b.r) / 2,
             (a.g + b.g) / 2,
             (a.b + b.b) / 2
-        ]);
+        ];
+        if ((typeof(a.a) !== 'undefined') || typeof(b.a !== 'undefined')) {
+            a.a = (typeof a.a === 'undefined') ? 255 : a.a;
+            b.a = (typeof b.a === 'undefined') ? 255 : b.a;
+            color.push((a.a + b.a) / 2);
+        }
+
+        return new Color(color);
     };
 
     Color.prototype.equals = function(b, tolerance) {
@@ -33,7 +40,7 @@
     Color.prototype.toString = function() {
         return (this.a == 1) ?
           "rgb("  + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ")" :
-              "rgba(" + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ", " + this.a + ")";
+              "rgba(" + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ", " + (Math.round(this.a * 100) / 100) + ")";
     };
 
     function Gradient(stops, start, length) {
