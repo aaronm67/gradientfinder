@@ -7,7 +7,7 @@
         </script>
         <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="tinycolor.js"></script>
-        <script type="text/javascript" src="../imgtocss.js"></script>        
+        <script type="text/javascript" src="../imgtocss.js"></script>
         <script type="text/javascript" src="qunit.js"></script>
         <link rel="stylesheet" href="qunit.css" type="text/css">
 <script type="text/javascript">
@@ -15,11 +15,11 @@
         var f = function() {
             return Math.floor(Math.random() * 255);
         }
-    
+
         return tinycolor({
             r: f(),
             g: f(),
-            b: f()        
+            b: f()
         }).toString();
     }
 
@@ -31,7 +31,6 @@
                 "0": random()
             }
         },
-    
         singleVertical: {
             start: "top",
             param: [0, 0, 0, 1],
@@ -45,21 +44,21 @@
             param: [0, 0, 0, 1],
             stops: {
                 "0": random(),
-                "0.22": random(),
-                "0.47": random(),
+                "0.25": random(),
+                "0.50": random(),
                 "0.75": random(),
                 "1": random()
             }
-        },
+        }/*,
         singleHorizontal: {
             start: "left",
             param: [0, 0, 1, 0],
             stops: {
                 "0": random(),
                 "1": random()
-            }               
-        }
-         /*,              
+            }
+        }*/
+         /*,
         multiHorizontal: {
             start: "left",
             param: [1, 0, 0, 0 ],
@@ -70,7 +69,7 @@
                 "0.7474747474747475": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        },
+        }/*,
         singleDiagLtr: {
             start: "top_left",
             param: [0, 0, 0, 1],
@@ -107,60 +106,62 @@
                 "0.4696969696969697": "rgb(59, 42, 108)",
                 "0.7474747474747475": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
-            }        
+            }
         }*/
     };
 
     $(function() {
         QUnit.init();
-        
-        var key, canvas, context, grad, gradient, idx, calcgrad;        
-        for (key in gradTests) {        
+
+        var key, canvas, context, grad, gradient, idx, calcgrad;
+        for (key in gradTests) {
             if (gradTests.hasOwnProperty(key)) {
-                var width = 300;
-                var height = 300;
-            
+                var width = 500;
+                var height = 500;
+
                 grad = gradTests[key];
                 canvas = document.createElement('canvas');
                 context = canvas.getContext('2d')
                 canvas.width = width;
-                canvas.height = height;                 
-                var param = [grad.param[0] * width, grad.param[1] * height, grad.param[2] * width, grad.param[3] * height];                
+                canvas.height = height;
+                var param = [grad.param[0] * width, grad.param[1] * height, grad.param[2] * width, grad.param[3] * height];
                 gradient = context.createLinearGradient.apply(context, param);
-                                                
+
                 for (idx in grad.stops) {
                     if (grad.stops.hasOwnProperty(idx)) {
-                        //log(idx, grad.stops[idx]);
                         gradient.addColorStop(parseFloat(idx), grad.stops[idx]);
                     }
                 }
                 context.fillStyle = gradient;
-                context.fillRect(0, 0, width, height);                                
-                testGrad(key, grad, canvas);     
+                context.fillRect(0, 0, width, height);
+                testGrad(key, grad, canvas);
                 $("body").append(canvas);
-                
+
             }
         }
-        
+
         function testGrad(name, grad, canvas) {
-            var calcgrad = findGradFromCanvas(canvas);                                        
+            var calcgrad = findGradFromCanvas(canvas);
             test(name, function() {
-                equal(calcgrad.start, grad.start);                
-                calcgrad.stops.forEach(function(s) {                    
-                    var expected = grad.stops[s.idx];
-                    equal(s.color.toString(), expected, "Stop at Index " + s.idx);
-                });                   
-            });                        
+
+                var calcstops = {};
+                var calcgradstops = calcgrad.stops.forEach(function(s) {
+                    calcstops[s.idx] = s.color.toString();
+                });
+
+                equal(calcgrad.start, grad.start);
+                deepEqual(calcstops, grad.stops);
+            });
         }
     });
 </script>
 
 </head>
     <body>
-        <h1 id="qunit-header">QUnit example</h1>  
-        <h2 id="qunit-banner"></h2>  
-        <h2 id="qunit-userAgent"></h2>  
-        <ol id="qunit-tests">          
+        <h1 id="qunit-header">QUnit example</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests">
     </body>
 </html>
 
