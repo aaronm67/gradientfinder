@@ -41,6 +41,20 @@
         this.start = start;
     }
 
+    
+    Gradient.prototype.toCss = function() {
+        var stops = this.stops.map(function(s) {
+            return s.color.toString() + " " + Math.round(s.idx * 100) + "%";
+        });
+        var css = this.start + ", " + stops.join(",");
+        return "background: -webkit-linear-gradient(" + css + ");" +
+                "background: -o-linear-gradient(" + css + ");" +
+                "background: -ms-linear-gradient(" + css + ");" +
+                "background: -moz-linear-gradient(" + css + ");" +
+                "background: -webkit-linear-gradient(" + css + ");" +
+                "background: linear-gradient(" + css + ");";
+    };
+
     function getPixel(arr, x, y) {
         if (y === undefined) {
             return new Color(arr[x]);
