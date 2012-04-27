@@ -15,6 +15,7 @@
             (a.b + b.b) / 2
         ]);
     };
+
     Color.prototype.equals = function(b, tolerance) {
        tolerance = tolerance || 5;
         if (Math.abs(this.r - b.r) > tolerance) {
@@ -33,7 +34,7 @@
         return (this.a == 1) ?
           "rgb("  + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ")" :
               "rgba(" + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ", " + this.a + ")";
-    }
+    };
 
     function Gradient(stops, start, length) {
         this.stops = stops;
@@ -98,12 +99,8 @@
 
     function getStops(arr, start, end) {
         var ret = [];
-        if (start === undefined) {
-            start = 0;
-        }
-        if (end === undefined) {
-            end = arr.length - 1;
-        }
+        start = start || 0;
+        end = end || arr.length - 1;
 
         var startColor = getPixel(arr, start);
         var endColor = getPixel(arr, end);
@@ -113,17 +110,16 @@
         // we found a stop -- add it
         if (average.equals(mid)) {
             ret.push(start);
-            // it's the last stop
-            if (end == arr.length - 1) {
-                if (!startColor.equals(endColor)) {
-                    ret.push(end);
-                }
-            }
-            // search between STOP and ARR.LEN for more stops
-            else {
+
+            // we're not at the end -- search between STOP and ARR.LEN for more stops
+            if (end != arr.length - 1) {
                 ret = ret.concat(getStops(arr, end, arr.length - 1));
+            }   
+            else if (end == arr.length - 1 && !startColor.equals(endColor)) {
+                ret.push(end);                                
             }
         }
+        // no stop found -- try again
         else {
             ret = ret.concat(getStops(arr, start, end - 1));
         }
@@ -131,15 +127,10 @@
         return ret;
     }
 
-
     function calculateGradient(arr) {
         var ret = [];
-        var mid;
-
-        // 1 dimensional array to calculate gradient across;
         var gradobj = getGradientObj(arr);
         var stops = getStops(gradobj.arr);
-
         var ret = stops.map(function(s) {
             var idx = s / (gradobj.arr.length - 1);
             return {
@@ -187,17 +178,15 @@
         image.src = dataurl;
         image.onload = function () {
             var img = this;
-            var canvas = $("<canvas>")[0];
+            var canvas = document.createElement("canvas");
             var ctx = canvas.getContext("2d");
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-
             return findGradFromCanvas(canvas);
         };
     }
 
     exports.findGrad = findGrad;
     exports.findGradFromCanvas = findGradFromCanvas;
-    exports.getMid = getMid;
 })(window);
