@@ -16,7 +16,7 @@
         ]);
     };
     Color.prototype.equals = function(b, tolerance) {
-       tolerance = tolerance || 2;
+       tolerance = tolerance || 5;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -41,46 +41,29 @@
     }
 
     function getPixel(arr, x, y) {
-        try {
-            if (y === undefined) {
-                return new Color(arr[x]);
-            }
+        if (y === undefined) {
+            return new Color(arr[x]);
+        }
 
-            return new Color(arr[y][x]);
-        } catch(e) { console.trace(); log(arr, x, y); }
+        return new Color(arr[y][x]);
     }
 
     // get the middle color of a 1 dimensional array
-    function getMid(arr, end) {
+    function getMid(arr, start, end) {
         if (arr.length == 1) {
             return new Color(arr[0]);
         }
 
-        var end = end || arr.length;
+        start = start || 0;
+        end = (end || arr.length) - start;
+        arr = arr.slice(start);
+
         if (end % 2 === 0) {
             return getPixel(arr, end / 2);
         }
         else {
             return Color.getAvg(getPixel(arr, Math.floor(end / 2)), getPixel(arr, Math.ceil(end / 2)));
         }
-    }
-
-    function getGradientStart(arr) {
-        var height = arr.length;
-        var width = arr[0].length;
-        var top_left = getPixel(arr, 0, 0);
-        var top_right = getPixel(arr, width - 1, 0);
-        var bottom_left = getPixel(arr, 0, height - 1);
-        var bottom_right = getPixel(arr, width - 1, height - 1);
-
-        if (top_left.equals(top_right)) {
-            return "top";
-        }
-        if (top_left.equals(bottom_left)) {
-            return "left";
-        }
-
-        return "";
     }
 
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
@@ -113,58 +96,41 @@
         return [];
     }
 
-    function getExpectedStop(arr, start, end) {
-        var add = 1;
-        start = start || 0;
-        end = end || arr.length - 1;
+    function getStops(arr, start, end) {
+        var ret = [];
+        if (start === undefined) {
+            start = 0;
+        }
+        if (end === undefined) {
+            end = arr.length - 1;
+        }
 
         var startColor = getPixel(arr, start);
-        while (add < end ) {
-            var endpx = Math.min(end, start + add);
-            var endColor = getPixel(arr, endpx);
-            var average = Color.getAvg(startColor, endColor);
-            var mid = getMid(arr, endpx);
+        var endColor = getPixel(arr, end);
+        var average = Color.getAvg(startColor, endColor)
+        var mid = getMid(arr, start, end);
 
-            if (!average.equals(mid)) {
-                return getExpectedStop(arr, start, add - 1);
+        // we found a stop -- add it
+        if (average.equals(mid)) {
+            ret.push(start);
+            // it's the last stop
+            if (end == arr.length - 1) {
+                if (!startColor.equals(endColor)) {
+                    ret.push(end);
+                }
             }
-
-            add = Math.min(add * 2, end);
-        }
-
-        return end;
-    }
-
-    function getStops(arr) {
-        var stops = [];
-        var start = getPixel(arr, 0);
-        var end = getPixel(arr, arr.length - 1);
-
-        stops.push({
-            idx: 0,
-            color: start
-        });
-
-        if (!start.equals(end)) {
-            stops.push({
-                idx: arr.length,
-                color: end
-            });
-        }
-
-        var actualMid = getMid(arr);
-        var expectedMid = Color.getAvg(start, end);
-        if (actualMid.equals(expectedMid)) {
-            return stops;
+            // search between STOP and ARR.LEN for more stops
+            else {
+                ret = ret.concat(getStops(arr, end, arr.length - 1));
+            }
         }
         else {
-            var endStop = getExpectedStop(arr);
-            while (endStop < arr.length) {
-                var newarr = arr.slice(endStop);
-                return stops.concat(getStops(newarr));
-            }
+            ret = ret.concat(getStops(arr, start, end - 1));
         }
+
+        return ret;
     }
+
 
     function calculateGradient(arr) {
         var ret = [];
@@ -174,23 +140,14 @@
         var gradobj = getGradientObj(arr);
         var stops = getStops(gradobj.arr);
 
-        var ret = [];
-        var keys = [];
-
-        stops.forEach(function(s) {
-            var idx = s.idx / arr.length;
-            if (keys.indexOf(idx) == -1) {
-                keys.push(idx);
-                ret.push({
-                    idx: idx,
-                    color: s.color
-                });
+        var ret = stops.map(function(s) {
+            var idx = s / (gradobj.arr.length - 1);
+            return {
+                idx: idx,
+                color: getPixel(gradobj.arr, s)
             }
         });
 
-        if (ret.length > 2) {
-            log(ret);
-        }
         return new Gradient(ret, gradobj.start);
     }
 
