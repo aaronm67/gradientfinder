@@ -20,7 +20,7 @@
             r: f(),
             g: f(),
             b: f(),
-            a: Math.round( (f() / 255) * 100 ) / 100
+            a: Math.max(Math.round( (f() / 255) * 100 ) / 100, .1)
         }).toString();
     }
 
@@ -36,32 +36,32 @@
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
-                "0": random(),
-                "1": random()
+                "0": "rgba(255, 255, 255, 1)",
+                "1": "rgb(0, 0, 0)"
             }
         },
         multiVertical: {
             start: "top",
             param: [0, 0, 0, 1],
             stops: {
-                "0": random(),
-                "0.25": random(),
-                "0.50": random(),
-                "0.75": random(),
-                "1": random()
+                "0": "rgba(203, 65, 246, 0.88)",
+                "0.25": "rgba(255, 255, 255, 0.1)",
+                "0.50": "rgba(243, 81, 53, 0.25)",
+                "0.75": "rgba(203, 65, 246, 1)",
+                "1": "rgba(82, 232, 212, 0.1)"
             }
         },
         singleHorizontal: {
             start: "left",
             param: [0, 0, 1, 0],
             stops: {
-                "0": random(),
-                "1": random()
+                "0": "rgba(1, 53, 112, 0.87)",
+                "1": "rgba(82, 232, 212, 0.15)"
             }
         },
         multiHorizontal: {
             start: "left",
-            param: [1, 0, 0, 0 ],
+            param: [0, 0, 1, 0 ],
             stops: {
                 "0": "rgb(0, 0, 0)",
                 "0.25": "rgb(255, 0, 232)",
@@ -143,23 +143,19 @@
         function testGrad(name, grad, canvas) {
             var calcgrad = GradientCalc.findGradFromCanvas(canvas);
             test(name, function() {
-
-                var calcstops = {};
+                expect(grad.stops.length);
                 calcgrad.stops.forEach(function(s) {   
                     var found = false;
                     for (var i in grad.stops) {
                         var diff = Math.abs(s.idx - i);
-                        log(i);
                         if (diff <= 0.050) {
                             var a = tinycolor(s.color);
                             var b = tinycolor(grad.stops[i]);
-                            ok(GradientCalc.colorsEqual(a, b), "Calc:" +  s.idx + " " + a.toRgbString() + "  Exp: " +i + " " + b.toRgbString());
+                            ok(GradientCalc.colorsEqual(a.toRgb(), b.toRgb()), "Calc:" +  s.idx + " " + a.toRgbString() + "  Exp: " +i + " " + b.toRgbString());
                             found = true;
                             break;
                         }
                     }
-                    
-                    ok(found, "Looking for a stop at " + s.idx);                    
                 });
             });
         }
