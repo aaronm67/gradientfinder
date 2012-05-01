@@ -58,7 +58,6 @@
                 "background: -o-linear-gradient(" + css + ");" +
                 "background: -ms-linear-gradient(" + css + ");" +
                 "background: -moz-linear-gradient(" + css + ");" +
-                "background: -webkit-linear-gradient(" + css + ");" +
                 "background: linear-gradient(" + css + ");";
     };
 
