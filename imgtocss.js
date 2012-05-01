@@ -54,11 +54,11 @@
             return s.color.toString() + " " + Math.round(s.idx * 100) + "%";
         });
         var css = this.start + ", " + stops.join(",");
-        return "background: -webkit-linear-gradient(" + css + ");" +
-                "background: -o-linear-gradient(" + css + ");" +
-                "background: -ms-linear-gradient(" + css + ");" +
-                "background: -moz-linear-gradient(" + css + ");" +
-                "background: linear-gradient(" + css + ");";
+        return "background: -webkit-linear-gradient(" + css + ");\n" +
+                "background: -o-linear-gradient(" + css + ");\n" +
+                "background: -ms-linear-gradient(" + css + ");\n" +
+                "background: -moz-linear-gradient(" + css + ");\n" +
+                "background: linear-gradient(" + css + ");\n";
     };
 
     function getPixel(arr, x, y) {
@@ -194,7 +194,7 @@
         return stops;
     }
 
-    function findGrad(dataurl) {
+    function findGrad(dataurl, onload) {
         var image = new Image();
         image.src = dataurl;
         image.onload = function () {
@@ -204,7 +204,7 @@
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            return findGradFromCanvas(canvas);
+            onload(findGradFromCanvas(canvas));
         };
     }
     

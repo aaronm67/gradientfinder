@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+        </script>
+        <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="filereader.js"></script>
+        <script type="text/javascript" src="../imgtocss.js"></script>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script type="text/javascript">
+            $(function() {
+                var opts = {
+                    readAsMap: {
+                        '.*': 'DataURL'
+                    },
+                    dragClass: "filedrop",
+                    on: {
+                        error: function() {
+                            alert("You must run this on a webserver to get results");
+                        },
+                        load: function (e, file) {
+                            console.log(arguments);
+                            var data = e.target.result;
+                            GradientCalc.findGrad(data, function(grad) {
+                                $("#grad").val(grad.toCss());
+                                $("#filedropper").attr("style", grad.toCss());
+                            });
+                        }
+                    }
+                };
+                
+                $("#filedropper").fileReaderJS(opts).fileClipboard(opts);
+            });
+        </script>
+        <style>
+            #filedropper { width: 300px; height: 300px; border: 1px solid black; }
+            .filedrop { background-color: red; }
+            textarea { width: 800px; height: 200px; }
+        </style>
+    </head>
+    
+    <body>
+
+    <div id="filedropper">
+        Drop an image here to find it's gradient
+    </div>
+    <textarea id="grad">
+    
+    </textarea>
+    
+    
+    </body>
