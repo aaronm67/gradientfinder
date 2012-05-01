@@ -149,7 +149,6 @@
     }
 
     function calculateGradient(arr) {
-        var ret = [];
         var gradobj = getGradientObj(arr);
         var stops = getStops(gradobj.arr);
         var ret = stops.map(function(s) {
