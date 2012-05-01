@@ -11,6 +11,11 @@
         <link rel="stylesheet" href="style.css" type="text/css">
         <script type="text/javascript">
             $(function() {
+                var loadGrad = function(css) {
+                    $("#grad").val(css);
+                    $("#filedropper").attr("style", css);
+                };
+            
                 var opts = {
                     readAsMap: {
                         '.*': 'DataURL'
@@ -21,17 +26,25 @@
                             alert("You must run this on a webserver to get results");
                         },
                         load: function (e, file) {
-                            console.log(arguments);
                             var data = e.target.result;
                             GradientCalc.findGrad(data, function(grad) {
-                                $("#grad").val(grad.toCss());
-                                $("#filedropper").attr("style", grad.toCss());
+                                loadGrad(grad.toCss());
                             });
                         }
                     }
                 };
                 
                 $("#filedropper").fileReaderJS(opts).fileClipboard(opts);
+                
+                $("#startdemo").load(function(e) {
+                    var img = this;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    loadGrad(GradientCalc.findGradFromCanvas(canvas).toCss());
+                });
             });
         </script>
         <style>
@@ -50,5 +63,5 @@
     
     </textarea>
     
-    
+    <img id="startdemo" src="linear_rainbow.png" style="display:none" />    
     </body>
