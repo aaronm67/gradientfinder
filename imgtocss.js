@@ -1,11 +1,20 @@
 (function(exports) {
+    function round(num, digits) {
+        digits = digits || 0;
+        return Math.round(num * Math.pow(10, digits)) / Math.pow(10, digits);
+    }
+
     var Color = function(arr) {
         this.r = arr[0];
         this.g = arr[1];
         this.b = arr[2];
         if (arr.length == 4) {
-            this.a = (arr[3] / 255);
+            this.a = round(arr[3] / 255, 2)
         }
+        if (typeof(this.r) === 'undefined' || typeof(this.g) === 'undefined' || typeof(this.b) === 'undefined') {
+            throw "Invalid Color Array passed in";
+        }
+        
     };
 
     Color.getAvg = function(a, b) {
@@ -24,7 +33,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-       tolerance = tolerance || 5;
+       tolerance = tolerance || 4;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -34,13 +43,21 @@
         if (Math.abs(this.b - b.b) > tolerance) {
             return false;
         }
+        // compare alphas -- treat undefined alpha as opaque
+        var aAlpha = (typeof(this.a) === 'undefined') ? 1 : this.a;
+        var bAlpha = (typeof(b.a) === 'undefined') ? 1 : b.a;        
+        var aTolerance = .3;
+        if (Math.abs(aAlpha - bAlpha) > tolerance) {
+            return false;
+        }
+
         return true;
     };
 
     Color.prototype.toString = function() {
         return (this.a == 1) ?
-          "rgb("  + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ")" :
-              "rgba(" + Math.round(this.r) + ", " + Math.round(this.g) + ", " + Math.round(this.b) + ", " + (Math.round(this.a * 100) / 100) + ")";
+          "rgb("  + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ")" :
+              "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
     };
 
     function Gradient(stops, start, length) {
@@ -51,7 +68,7 @@
     
     Gradient.prototype.toCss = function() {
         var stops = this.stops.map(function(s) {
-            return s.color.toString() + " " + Math.round(s.idx * 100) + "%";
+            return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
         var css = this.start + ", " + stops.join(",");
         return "background: -webkit-linear-gradient(" + css + ");\n" +
@@ -152,7 +169,7 @@
         var gradobj = getGradientObj(arr);
         var stops = getStops(gradobj.arr);
         var ret = stops.map(function(s) {
-            var idx = s / (gradobj.arr.length - 1);
+            var idx = round(s / (gradobj.arr.length - 1), 2);
             return {
                 idx: idx,
                 color: getPixel(gradobj.arr, s)
@@ -208,7 +225,16 @@
     }
     
     function colorsEqual(c1, c2) {
-        return new Color(c1).equals(new Color(c2));
+        var color1 = c1;
+        var color2 = c2;
+        if (c1.length) {
+            color1 = new Color(c1);
+        }
+        if (c2.length) {
+            color2 = new Color(c2);
+        }
+
+        return Color.prototype.equals.apply(color1, [color2]);
     }
 
     exports.GradientCalc = {
