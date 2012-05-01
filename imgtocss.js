@@ -60,17 +60,21 @@
               "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
     };
 
-    function Gradient(stops, start, length) {
+    function Gradient(stops, angle, length) {
         this.stops = stops;
-        this.start = start;
+        this.angle = angle;
     }
-
     
     Gradient.prototype.toCss = function() {
+        if (this.stops.length === 1) {
+            return "background-color: " + s.color.toString();
+        }
+        
         var stops = this.stops.map(function(s) {
             return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
-        var css = this.start + ", " + stops.join(",");
+        
+        var css = this.angle + "deg, " + stops.join(",");
         return "background: -webkit-linear-gradient(" + css + ");\n" +
                 "background: -o-linear-gradient(" + css + ");\n" +
                 "background: -ms-linear-gradient(" + css + ");\n" +
@@ -104,20 +108,43 @@
         }
     }
 
+    function getSingleDimensionalArray(arr, angle) {
+        var rads = angle * (180 / Math.PI);
+        var cos = Math.cos(rads);
+        var sin = Math.sin(rads);
+        var start = getPixel(arr, 0, 0);        
+
+        var ret = [];
+        var x = 0;
+        var y = 0;
+        var len = 1;
+        
+        var lastX;
+        var lastY;
+        while (x < arr[0].length && y < arr.length) {
+            if (x >= 0 && y >= 0) {
+                ret.push(arr[x][y]);
+            }
+            
+            len++;
+            x = Math.round(cos * len);
+            y = Math.round(sin * len);
+        }
+
+        return ret;
+    }
+
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
     function getGradientObj(arr) {
         var height = arr.length;
         var width = arr[0].length;
-
         var top_left = getPixel(arr, 0, 0);
         var top_right = getPixel(arr, width - 1, 0);
         var bottom_left = getPixel(arr, 0, height - 1);
         var bottom_right = getPixel(arr, width - 1, height - 1);
-
-        // vertical gradient -- row[0][0] == row[0][height]
         if (top_left.equals(top_right)) {
             return {
-                start: "top",
+                angle: -90,
                 arr: arr.map(function(i) {
                     return i[0];
                 })
@@ -126,12 +153,34 @@
         // horizontal gradient
         if (top_left.equals(bottom_left)) {
             return {
-                start: "left",
+                angle: 0,
                 arr: arr[0]
             }
         }
+        /*
+        
+        
+        for (var angle = 0; angle <= 180; angle+=90) {
+            var singlearr = getSingleDimensionalArray(arr, angle);
+            var sameColor = true;
+            
+            var firstColor = getPixel(singlearr, 0);
+            for (var i = 0; i < singlearr.length; i++) {
+                var thiscolor = getPixel(singlearr, i);
+                if (!firstColor.equals(thiscolor)) {
+                    sameColor = false;
+                    break;
+                }
+            }
+            if (sameColor) {
+                return {
+                    angle: angle,
+                    arr: singlearr
+                }
+            }
+        }*/
 
-        return [];
+        throw "Couldn't find a gradient angle";
     }
 
     function getStops(arr, start, end) {
@@ -176,7 +225,7 @@
             }
         });
 
-        return new Gradient(ret, gradobj.start);
+        return new Gradient(ret, gradobj.angle);
     }
 
     function getColorArray(ctx) {

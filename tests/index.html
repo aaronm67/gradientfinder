@@ -26,14 +26,14 @@
 
     var gradTests = {
         singleStop: {
-            start: "top",
+            angle: -90,
             param: [0, 0, 0, 1],
             stops: {
                 "0": random()
             }
         },
         singleVertical: {
-            start: "top",
+            angle: -90,
             param: [0, 0, 0, 1],
             stops: {
                 "0": "rgba(255, 255, 255, 1)",
@@ -41,7 +41,7 @@
             }
         },
         multiVertical: {
-            start: "top",
+            angle: -90,
             param: [0, 0, 0, 1],
             stops: {
                 "0": "rgba(203, 65, 246, 0.88)",
@@ -52,7 +52,7 @@
             }
         },
         singleHorizontal: {
-            start: "left",
+            angle: 0,
             param: [0, 0, 1, 0],
             stops: {
                 "0": "rgba(1, 53, 112, 0.87)",
@@ -60,7 +60,7 @@
             }
         },
         multiHorizontal: {
-            start: "left",
+            angle: 0,
             param: [0, 0, 1, 0 ],
             stops: {
                 "0": "rgb(0, 0, 0)",
@@ -69,45 +69,15 @@
                 "0.75": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        }/*,
+        },
         singleDiagLtr: {
-            start: "top_left",
-            param: [0, 0, 0, 1],
+            angle: "60",
+            param: [0, (258/300), .5, 0],
             stops: {
                 "0": "rgb(0, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        },
-        multiDiagLtr: {
-            start: "top_left",
-            param: [1, 1, 0, 0],
-            stops: {
-                "0": "rgb(0, 0, 0)",
-                "0.21717171717171718": "rgb(255, 0, 232)",
-                "0.4696969696969697": "rgb(59, 42, 108)",
-                "0.7474747474747475": "rgb(68, 0, 0)",
-                "1": "rgb(255, 255, 255)"
-            }
-        },
-        singleDiagRtl: {
-            start: "top_right",
-            param: [0, 0, 0, 1],
-            stops: {
-                "0": "rgb(0, 0, 0)",
-                "1": "rgb(255, 255, 255)"
-            }
-        },
-        multiDiagRtl: {
-            start: "top_right",
-            param: [0, 0, 0, 1],
-            stops: {
-                "0": "rgb(0, 0, 0)",
-                "0.21717171717171718": "rgb(255, 0, 232)",
-                "0.4696969696969697": "rgb(59, 42, 108)",
-                "0.7474747474747475": "rgb(68, 0, 0)",
-                "1": "rgb(255, 255, 255)"
-            }
-        }*/
+        }
     };
 
     $(function() {
@@ -132,18 +102,24 @@
                         gradient.addColorStop(parseFloat(idx), grad.stops[idx]);
                     }
                 }
+
                 context.fillStyle = gradient;
                 context.fillRect(0, 0, width, height);
-                testGrad(key, grad, canvas);
                 $("body").append(canvas);
-
+                testGrad(key, grad, canvas);                
             }
         }
 
         function testGrad(name, grad, canvas) {
             var calcgrad = GradientCalc.findGradFromCanvas(canvas);
-            test(name, function() {
-                expect(grad.stops.length);
+            var expectedStops = 0;
+            for (var i in grad.stops) {
+                expectedStops++;
+            }
+
+            test(name + " Stops", function() {
+                expect(expectedStops + 1);
+                equal(calcgrad.angle, grad.angle);
                 calcgrad.stops.forEach(function(s) {   
                     var found = false;
                     for (var i in grad.stops) {
