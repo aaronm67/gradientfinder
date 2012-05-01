@@ -141,16 +141,26 @@
         }
 
         function testGrad(name, grad, canvas) {
-            var calcgrad = findGradFromCanvas(canvas);
+            var calcgrad = GradientCalc.findGradFromCanvas(canvas);
             test(name, function() {
 
                 var calcstops = {};
-                var calcgradstops = calcgrad.stops.forEach(function(s) {
-                    calcstops[s.idx] = s.color.toString();
+                calcgrad.stops.forEach(function(s) {   
+                    var found = false;
+                    for (var i in grad.stops) {
+                        var diff = Math.abs(s.idx - i);
+                        log(i);
+                        if (diff <= 0.050) {
+                            var a = tinycolor(s.color);
+                            var b = tinycolor(grad.stops[i]);
+                            ok(GradientCalc.colorsEqual(a, b), "Calc:" +  s.idx + " " + a.toRgbString() + "  Exp: " +i + " " + b.toRgbString());
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    ok(found, "Looking for a stop at " + s.idx);                    
                 });
-
-                equal(calcgrad.start, grad.start);
-                deepEqual(calcstops, grad.stops);
             });
         }
     });

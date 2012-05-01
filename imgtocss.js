@@ -135,7 +135,8 @@
             // we're not at the end -- search between STOP and ARR.LEN for more stops
             if (end != arr.length - 1) {
                 ret = ret.concat(getStops(arr, end, arr.length - 1));
-            }   
+            }
+            // found a stop at the end of the array -- break out of the loop
             else if (end == arr.length - 1 && !startColor.equals(endColor)) {
                 ret.push(end);                                
             }
@@ -207,7 +208,14 @@
             return findGradFromCanvas(canvas);
         };
     }
+    
+    function colorsEqual(c1, c2) {
+        return new Color(c1).equals(new Color(c2));
+    }
 
-    exports.findGrad = findGrad;
-    exports.findGradFromCanvas = findGradFromCanvas;
+    exports.GradientCalc = {
+        findGrad: findGrad,
+        findGradFromCanvas: findGradFromCanvas,
+        colorsEqual: colorsEqual
+    };
 })(window);
