@@ -130,6 +130,39 @@
         };
     }
 
+    function arraysEqual(a, b) {
+        if (!a || !b || !a.length || !b.length) {
+            return false;
+        }
+
+        if (a.length != b.length) { return false; }
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function getAngle(arr) {
+        function getSingleColorAngles(arr) {
+            var ret = [];
+            for (var angle = 0; angle <= 179; angle++) {
+                var singlearr = getSingleDimensionalArray(arr, angle);
+                var sameColor = true;
+                singlearr = singlearr.sort();
+                if (singlearr && arraysEqual(singlearr[0], singlearr[singlearr.length - 1])) {
+                    ret.push(angle);
+                }
+            }
+
+            return ret;
+        }
+
+        var possibles = getSingleColorAngles(arr);
+        return possibles[0] - 90;
+    }
+    
     function getSingleDimensionalArray(arr, angle) {
         var width = arr[0].length;
         var height = arr.length;
@@ -148,27 +181,11 @@
     }
 
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
-    function getGradientObj(arr) {    
-        for (var angle = 0; angle <= 179; angle++) {
-            var singlearr = getSingleDimensionalArray(arr, angle);
-            var sameColor = true;
-            if (singlearr.length > 1) {
-                var firstColor = getPixel(singlearr, 0);
-                for (var i = 0; i < singlearr.length; i++) {
-                    var thiscolor = getPixel(singlearr, i);
-                    if (!firstColor.equals(thiscolor, 0)) {
-                        sameColor = false;
-                        break;
-                    }
-                }
-                if (sameColor) {
-                    var retArray = getSingleDimensionalArray(arr, angle - 90);
-                    return {
-                        angle: angle,
-                        arr: retArray
-                    }
-                }
-            }
+    function getGradientObj(arr) {
+        var angle = getAngle(arr);
+        return {
+            angle: angle,
+            arr: getSingleDimensionalArray(arr, angle)
         }
 
         throw "Couldn't find a gradient angle";
