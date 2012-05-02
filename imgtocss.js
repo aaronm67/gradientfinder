@@ -108,77 +108,66 @@
         }
     }
 
-    function getSingleDimensionalArray(arr, angle) {
-        var rads = angle * (180 / Math.PI);
-        var cos = Math.cos(rads);
-        var sin = Math.sin(rads);
-        var start = getPixel(arr, 0, 0);        
-
-        var ret = [];
-        var x = 0;
-        var y = 0;
-        var len = 1;
-        
-        var lastX;
-        var lastY;
-        while (x < arr[0].length && y < arr.length) {
-            if (x >= 0 && y >= 0) {
-                ret.push(arr[x][y]);
+    function angleToVector(angle) {
+        function pointOfAngle(a) {
+            function toRads(d) {
+                return (d * Math.PI) / 180;
             }
-            
-            len++;
-            x = Math.round(cos * len);
-            y = Math.round(sin * len);
+            return {
+                x: Math.max(Math.cos(toRads(a)), 0),
+                y: Math.max(Math.sin(toRads(a)), 0)
+            };
+        }
+
+        angle = angle % 360;
+        var startPoint = pointOfAngle(180 - angle);
+        var endPoint = pointOfAngle(360 - angle);
+        return {
+            x1: startPoint.x,
+            y1: startPoint.y,
+            x2: endPoint.x,
+            y2: endPoint.y
+        };
+    }
+
+    function getSingleDimensionalArray(arr, angle) {
+        var width = arr[0].length;
+        var height = arr.length;
+        var vector = angleToVector(angle);   
+        var maxLen = Math.sqrt( Math.pow(vector.x2 * width, 2) + Math.pow(vector.y2 * width, 2));
+        var ret = [];
+        for (var len = 0; len < maxLen; len++) {
+            var x = Math.round(vector.x2 * len);
+            var y = Math.round(vector.y2 * len);
+            ret.push(arr[x][y]);
         }
 
         return ret;
     }
 
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
-    function getGradientObj(arr) {
-        var height = arr.length;
-        var width = arr[0].length;
-        var top_left = getPixel(arr, 0, 0);
-        var top_right = getPixel(arr, width - 1, 0);
-        var bottom_left = getPixel(arr, 0, height - 1);
-        var bottom_right = getPixel(arr, width - 1, height - 1);
-        if (top_left.equals(top_right)) {
-            return {
-                angle: -90,
-                arr: arr.map(function(i) {
-                    return i[0];
-                })
-            };
-        }
-        // horizontal gradient
-        if (top_left.equals(bottom_left)) {
-            return {
-                angle: 0,
-                arr: arr[0]
-            }
-        }
-        /*
-        
-        
-        for (var angle = 0; angle <= 180; angle+=90) {
+    function getGradientObj(arr) {    
+        for (var angle = 0; angle <= 180; angle++) {
             var singlearr = getSingleDimensionalArray(arr, angle);
             var sameColor = true;
-            
-            var firstColor = getPixel(singlearr, 0);
-            for (var i = 0; i < singlearr.length; i++) {
-                var thiscolor = getPixel(singlearr, i);
-                if (!firstColor.equals(thiscolor)) {
-                    sameColor = false;
-                    break;
+            if (singlearr.length > 1) {
+                var firstColor = getPixel(singlearr, 0);
+                for (var i = 0; i < singlearr.length; i++) {
+                    var thiscolor = getPixel(singlearr, i);
+                    if (!firstColor.equals(thiscolor)) {
+                        sameColor = false;
+                        break;
+                    }
+                }
+                if (sameColor) {
+                    var retArray = getSingleDimensionalArray(arr, -1 * angle);
+                    return {
+                        angle: angle,
+                        arr: retArray
+                    }
                 }
             }
-            if (sameColor) {
-                return {
-                    angle: angle,
-                    arr: singlearr
-                }
-            }
-        }*/
+        }
 
         throw "Couldn't find a gradient angle";
     }
