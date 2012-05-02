@@ -139,7 +139,9 @@
         for (var len = 0; len < maxLen; len++) {
             var x = Math.round(vector.x2 * len);
             var y = Math.round(vector.y2 * len);
-            ret.push(arr[x][y]);
+            if (x < width && y < height) {
+                ret.push(arr[x][y]);
+            }
         }
 
         return ret;
@@ -147,20 +149,20 @@
 
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
     function getGradientObj(arr) {    
-        for (var angle = 0; angle <= 180; angle++) {
+        for (var angle = 0; angle <= 179; angle++) {
             var singlearr = getSingleDimensionalArray(arr, angle);
             var sameColor = true;
             if (singlearr.length > 1) {
                 var firstColor = getPixel(singlearr, 0);
                 for (var i = 0; i < singlearr.length; i++) {
                     var thiscolor = getPixel(singlearr, i);
-                    if (!firstColor.equals(thiscolor)) {
+                    if (!firstColor.equals(thiscolor, 0)) {
                         sameColor = false;
                         break;
                     }
                 }
                 if (sameColor) {
-                    var retArray = getSingleDimensionalArray(arr, -1 * angle);
+                    var retArray = getSingleDimensionalArray(arr, angle - 90);
                     return {
                         angle: angle,
                         arr: retArray
