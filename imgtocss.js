@@ -108,7 +108,7 @@
         }
     }
 
-    function angleToVector(angle) {
+    function angleToVector(angle, length, digits) {
         function pointOfAngle(a) {
             function toRads(d) {
                 return (d * Math.PI) / 180;
@@ -122,16 +122,17 @@
         angle = angle % 360;
         var startPoint = pointOfAngle(180 - angle);
         var endPoint = pointOfAngle(360 - angle);
+
         return {
-            x1: startPoint.x,
-            y1: startPoint.y,
-            x2: endPoint.x,
-            y2: endPoint.y
+            x1: round(startPoint.x * length, digits),
+            y1: round(startPoint.y * length, digits),
+            x2: round(endPoint.x * length, digits),
+            y2: round(endPoint.y * length, digits)
         };
     }
 
     function arraysEqual(a, b) {
-        if (!a || !b || !a.length || !b.length) {
+        if (!a || !b) {
             return false;
         }
 
@@ -154,38 +155,85 @@
                 if (singlearr && arraysEqual(singlearr[0], singlearr[singlearr.length - 1])) {
                     ret.push(angle);
                 }
+                else if (ret.length > 0) {
+                    break;
+                }
             }
 
             return ret;
         }
-
-        var possibles = getSingleColorAngles(arr);
-        return possibles[0] - 90;
+       
+        console.time("Get single color");
+        var possibles = getSingleColorAngles(arr); 
+        log(possibles);
+        console.timeEnd("Get single color");
+        if (possibles.length === 1) {
+            return possibles[0] - 90;
+        }
+        if (possibles.length === 180) {
+            return possibles[0] - 90;
+        }
     }
     
     function getSingleDimensionalArray(arr, angle) {
         var width = arr[0].length;
         var height = arr.length;
-        var vector = angleToVector(angle);   
-        var maxLen = Math.sqrt( Math.pow(vector.x2 * width, 2) + Math.pow(vector.y2 * width, 2));
+        var multiplier = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));        
+        var vector = angleToVector(angle, multiplier);
+        var coords = bresenhamLine(vector.x1, vector.y1, vector.x2, vector.y2);
+
         var ret = [];
-        for (var len = 0; len < maxLen; len++) {
-            var x = Math.round(vector.x2 * len);
-            var y = Math.round(vector.y2 * len);
-            if (x < width && y < height) {
+        for (var i = 0; i < coords.length; i++) {
+            var x = coords[i][0];
+            var y = coords[i][1];
+
+            if (typeof(arr[x]) !== "undefined" && typeof(arr[x][y]) !== "undefined") {
                 ret.push(arr[x][y]);
             }
+            
+        }
+        return ret;
+    }
+
+    // http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+    function bresenhamLine(x1, y1, x2, y2) {    
+        if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
+            throw "Invalid coordinates for Bresenham's";
         }
 
-        return ret;
+        var coords = [];
+        var dx = Math.abs(x2 - x1);
+        var dy = Math.abs(y2 - y1);
+        var sx = (x1 < x2) ? 1 : -1;
+        var sy = (y1 < y2) ? 1 : -1;
+        var err = dx - dy;
+
+        coords.push([x1, y1]);        
+        while (!((x1 == x2) && (y1 == y2))) {
+            var e2 = err << 1;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+            // Set coordinates
+            coords.push([x1, y1]);
+        }
+
+        return coords;
     }
 
     // convert from a 2 dimensional array to a 1 dimensional array of the gradient
     function getGradientObj(arr) {
         var angle = getAngle(arr);
-        return {
-            angle: angle,
-            arr: getSingleDimensionalArray(arr, angle)
+        if (typeof(angle) !== "undefined") {
+            return {
+                angle: angle,
+                arr: getSingleDimensionalArray(arr, angle)
+            }
         }
 
         throw "Couldn't find a gradient angle";
