@@ -8,13 +8,12 @@
         this.r = arr[0];
         this.g = arr[1];
         this.b = arr[2];
-        if (arr.length == 4) {
-            this.a = round(arr[3] / 255, 2)
+        if (arr.length === 4) {
+            this.a = round(arr[3] / 255, 2);
         }
         if (typeof(this.r) === 'undefined' || typeof(this.g) === 'undefined' || typeof(this.b) === 'undefined') {
             throw "Invalid Color Array passed in";
         }
-        
     };
 
     Color.getAvg = function(a, b) {
@@ -46,7 +45,7 @@
         // compare alphas -- treat undefined alpha as opaque
         var aAlpha = (typeof(this.a) === 'undefined') ? 1 : this.a;
         var bAlpha = (typeof(b.a) === 'undefined') ? 1 : b.a;        
-        var aTolerance = .3;
+        var aTolerance = tolerance / 25;
         if (Math.abs(aAlpha - bAlpha) > tolerance) {
             return false;
         }
@@ -55,7 +54,7 @@
     };
 
     Color.prototype.toString = function() {
-        return (this.a == 1) ?
+        return (this.a === 1) ?
           "rgb("  + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ")" :
               "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
     };
@@ -64,12 +63,12 @@
         this.stops = stops;
         this.angle = angle;
     }
-    
+
     Gradient.prototype.toCss = function() {
         if (this.stops.length === 1) {
-            return "background-color: " + s.color.toString();
-        }
-        
+            return "background-color: " + this.stops[0].color.toString();
+       }
+
         var stops = this.stops.map(function(s) {
             return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
@@ -92,7 +91,7 @@
 
     // get the middle color of a 1 dimensional array
     function getMid(arr, start, end) {
-        if (arr.length == 1) {
+        if (arr.length === 1) {
             return new Color(arr[0]);
         }
 
@@ -108,7 +107,7 @@
         }
     }
 
-    function angleToVector(angle, length, digits) {
+    function vectorToLine(angle, length, digits) {
         function pointOfAngle(a) {
             function toRads(d) {
                 return (d * Math.PI) / 180;
@@ -146,9 +145,9 @@
             return ret;
         }
 
-        function getLikely(possibles) {
+        function getLikely(array, possibles) {
             var sorted = possibles.map(function(angle) {
-                var grad = getSingleDimensionalArray(arr, angle);
+                var grad = getSingleDimensionalArray(array, angle);
                 return { 
                     angle: angle,
                     length: getStops(grad).length
@@ -156,20 +155,26 @@
             });
             sorted = sorted.sort(function(a, b) {
                 return a.length - b.length;
-            });      
-            log(sorted);
+            });
+
             return sorted[0].angle;
         }
 
         var possibles = getSingleColorAngles(arr);
-        return getLikely(possibles);       
+        
+        var angle = getLikely(arr, possibles);
+        if (typeof(angle) === "undefined") {
+            throw "Couldn't find a gradient angle";
+        }
+
+        return angle;
     }
     
     function getSingleDimensionalArray(arr, angle) {
         var width = arr[0].length;
         var height = arr.length;
         var multiplier = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));        
-        var vector = angleToVector(angle, multiplier);
+        var vector = vectorToLine(angle, multiplier);
         var coords = bresenhamLine(vector.x1, vector.y1, vector.x2, vector.y2);
 
         var ret = [];
@@ -199,8 +204,8 @@
         var err = dx - dy;
 
         coords.push([x1, y1]);        
-        while (!((x1 == x2) && (y1 == y2))) {
-            var e2 = err << 1;
+        while (!((x1 === x2) && (y1 === y2))) {
+            var e2 = err * 2;
             if (e2 > -dy) {
                 err -= dy;
                 x1 += sx;
@@ -216,19 +221,6 @@
         return coords;
     }
 
-    // convert from a 2 dimensional array to a 1 dimensional array of the gradient
-    function getGradientObj(arr) {
-        var angle = getAngle(arr);
-        if (typeof(angle) !== "undefined") {
-            return {
-                angle: angle,
-                arr: getSingleDimensionalArray(arr, angle)
-            }
-        }
-
-        throw "Couldn't find a gradient angle";
-    }
-
     function getStops(arr, start, end) {
         var ret = [];
         start = start || 0;
@@ -236,7 +228,7 @@
 
         var startColor = getPixel(arr, start);
         var endColor = getPixel(arr, end);
-        var average = Color.getAvg(startColor, endColor)
+        var average = Color.getAvg(startColor, endColor);
         var mid = getMid(arr, start, end);
 
         // we found a stop -- add it
@@ -244,11 +236,11 @@
             ret.push(start);
 
             // we're not at the end -- search between STOP and ARR.LEN for more stops
-            if (end != arr.length - 1) {
+            if (end !== arr.length - 1) {
                 ret = ret.concat(getStops(arr, end, arr.length - 1));
             }
             // found a stop at the end of the array -- break out of the loop
-            else if (end == arr.length - 1 && !startColor.equals(endColor)) {
+            else if (end === arr.length - 1 && !startColor.equals(endColor)) {
                 ret.push(end);                                
             }
         }
@@ -261,17 +253,18 @@
     }
 
     function calculateGradient(arr) {
-        var gradobj = getGradientObj(arr);
-        var stops = getStops(gradobj.arr);
+        var angle = getAngle(arr);
+        var lineArray = getSingleDimensionalArray(arr, angle);
+        var stops = getStops(lineArray);
         var ret = stops.map(function(s) {
-            var idx = round(s / (gradobj.arr.length - 1), 2);
+            var idx = round(s / (lineArray.length - 1), 2);
             return {
                 idx: idx,
-                color: getPixel(gradobj.arr, s)
-            }
+                color: getPixel(lineArray, s)
+            };
         });
 
-        return new Gradient(ret, gradobj.angle);
+        return new Gradient(ret, angle);
     }
 
     function getColorArray(ctx) {
