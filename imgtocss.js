@@ -5,6 +5,10 @@
     }
 
     var Color = function(arr) {
+        if (typeof(arr) === "string") {
+            arr = arr.split(",");
+        }
+
         this.r = arr[0];
         this.g = arr[1];
         this.b = arr[2];
@@ -133,15 +137,21 @@
     function getAngle(arr) {
         function getSingleColorAngles(array) {
             var ret = [];
-            for (var angle = 0; angle <= 179; angle++) {
-                var singlearr = getSingleDimensionalArray(array, angle);
-                var sameColor = true;
+            console.time("Angles");
+            for (var angle = -90; angle <= 90; angle++) {
+                var singlearr = getSingleDimensionalArray(array, angle).map(function(a) {
+                    return a.join();
+                });
+
                 singlearr = singlearr.sort();
-                if (singlearr && colorsEqual(singlearr[0], singlearr[singlearr.length - 1], 0)) {
+                if (singlearr && colorsEqual(singlearr[0], singlearr[singlearr.length - 1], 1)) {
                     ret.push(angle - 90);
                 }
+                else if (ret.length > 0) {
+                    //break;
+                }
             }
-
+            console.timeEnd("Angles");
             return ret;
         }
 
@@ -150,11 +160,22 @@
                 var grad = getSingleDimensionalArray(array, angle);
                 return { 
                     angle: angle,
-                    length: getStops(grad).length
+                    stops: getStops(grad).length
                 };
             });
             sorted = sorted.sort(function(a, b) {
-                return a.length - b.length;
+                if (a.stops === 1) {
+                    return 1;
+                }
+                if (b.stops === 1) {
+                    return -1;
+                }
+                if (a.stops !== b.stops) {
+                    return a.length - b.length;
+                }
+                else {
+                    return a.angle - b.angle;
+                }
             });
 
             return sorted[0].angle;
@@ -264,7 +285,7 @@
             };
         });
 
-        return new Gradient(ret, angle);
+        return new Gradient(ret, angle + 90);
     }
 
     function getColorArray(ctx) {
