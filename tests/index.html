@@ -25,6 +25,7 @@
     }
 
     var gradTests = {
+        /*
         singleStop: {
             angle: -90,
             param: [0, 0, 0, 1],
@@ -69,7 +70,7 @@
                 "0.75": "rgb(68, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
-        },
+        },*/
         singleDiagLtr: {
             angle: "60",
             param: [0, (258/300), .5, 0],
@@ -77,19 +78,27 @@
                 "0": "rgb(0, 0, 0)",
                 "1": "rgb(255, 255, 255)"
             }
+        },
+        oddAspect: {
+            angle: "60",
+            param: [0, (258/300), .5, 0],
+            stops: {
+                "0": "rgb(0, 0, 0)",
+                "1": "rgb(255, 255, 255)"
+            },
+            width: 300,
+            height: 100
         }
     };
 
     $(function() {
         QUnit.init();
-
         var key, canvas, context, grad, gradient, idx, calcgrad;
         for (key in gradTests) {
             if (gradTests.hasOwnProperty(key)) {
-                var width = 500;
-                var height = 500;
-
                 grad = gradTests[key];
+                var width = grad.width || 500;
+                var height = grad.height || 500;                
                 canvas = document.createElement('canvas');
                 context = canvas.getContext('2d')
                 canvas.width = width;

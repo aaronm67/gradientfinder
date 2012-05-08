@@ -131,48 +131,38 @@
         };
     }
 
-    function arraysEqual(a, b) {
-        if (!a || !b) {
-            return false;
-        }
-
-        if (a.length != b.length) { return false; }
-        for (var i = 0; i < a.length; i++) {
-            if (a[i] !== b[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     function getAngle(arr) {
-        function getSingleColorAngles(arr) {
+        function getSingleColorAngles(array) {
             var ret = [];
             for (var angle = 0; angle <= 179; angle++) {
-                var singlearr = getSingleDimensionalArray(arr, angle);
+                var singlearr = getSingleDimensionalArray(array, angle);
                 var sameColor = true;
                 singlearr = singlearr.sort();
-                if (singlearr && arraysEqual(singlearr[0], singlearr[singlearr.length - 1])) {
-                    ret.push(angle);
-                }
-                else if (ret.length > 0) {
-                    break;
+                if (singlearr && colorsEqual(singlearr[0], singlearr[singlearr.length - 1], 0)) {
+                    ret.push(angle - 90);
                 }
             }
 
             return ret;
         }
-       
-        console.time("Get single color");
-        var possibles = getSingleColorAngles(arr); 
-        log(possibles);
-        console.timeEnd("Get single color");
-        if (possibles.length === 1) {
-            return possibles[0] - 90;
+
+        function getLikely(possibles) {
+            var sorted = possibles.map(function(angle) {
+                var grad = getSingleDimensionalArray(arr, angle);
+                return { 
+                    angle: angle,
+                    length: getStops(grad).length
+                };
+            });
+            sorted = sorted.sort(function(a, b) {
+                return a.length - b.length;
+            });      
+            log(sorted);
+            return sorted[0].angle;
         }
-        if (possibles.length === 180) {
-            return possibles[0] - 90;
-        }
+
+        var possibles = getSingleColorAngles(arr);
+        return getLikely(possibles);       
     }
     
     function getSingleDimensionalArray(arr, angle) {
