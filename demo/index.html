@@ -7,48 +7,50 @@
         </script>
         <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="static/filereader.js"></script>
+        <script type="text/javascript" src="static/tinycolor.js"></script>
         <script type="text/javascript" src="../imgtocss.js"></script>
         <link rel="stylesheet" href="static/style.css" type="text/css">
         <script type="text/javascript">
-            $(function() {
-                $("body")[0].ondragstart = function() { return false; };
-                $("#filedropper")[0].ondragstart = function() { return false; };
-            
-                var loadGrad = function(css) {
-                    $("#grad").val(css);
-                    $("#filedropper").attr("style", css);
-                };
-            
-                var opts = {
-                    readAsMap: {
-                        '.*': 'DataURL'
+        $(function() {
+            $("body")[0].ondragstart = function() { return false; };
+            $("#filedropper")[0].ondragstart = function() { return false; };
+            var opts = {
+                readAsMap: {
+                    '.*': 'DataURL'
+                },
+                dragClass: "filedrop",
+                on: {
+                    error: function() {
+                        alert("You must run this on a webserver to get results");
                     },
-                    dragClass: "filedrop",
-                    on: {
-                        error: function() {
-                            alert("You must run this on a webserver to get results");
-                        },
-                        load: function (e, file) {
-                            var data = e.target.result;
-                            GradientCalc.findGrad(data, function(grad) {
-                                loadGrad(grad.toCss());
-                            });
-                        }
+                    load: function (e, file) {
+                        var data = e.target.result;
+                        GradientCalc.findGrad(data, function(grad) {
+                            $("#grad").val(css);
+                            $("#filedropper").attr("style", css);
+                        });
                     }
-                };
-                
-                $("body").fileReaderJS(opts).fileClipboard(opts);
-                
-                $("#startdemo").load(function(e) {
-                    var img = this;
-                    var canvas = document.createElement("canvas");
-                    var ctx = canvas.getContext("2d");
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                    loadGrad(GradientCalc.findGradFromCanvas(canvas).toCss());
-                });
+                }
+            };
+            
+            $("body").fileReaderJS(opts).fileClipboard(opts);
+            
+            $("#samples img").load(function(e) {
+                log("load");
+                var img = this;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                var gradCss = GradientCalc.findGradFromCanvas(canvas).toCss();
+                var preview = $(img).parent().siblings().find(".preview");
+                var css = $(img).parent().siblings().find(".css");
+                preview.attr("style", gradCss);
+                css.val(gradCss);
             });
+        });                    
         </script>
         <style>
             #filedropper { width: 300px; height: 300px; border: 1px solid black; }
@@ -62,6 +64,8 @@
             }
             .filedrop { background-color: red; }
             textarea { width: 800px; height: 200px; }
+            .preview { width: 100px; height: 100px; }
+            .css { height: 100px; }
         </style>
     </head>
     
@@ -75,5 +79,150 @@
     
     </textarea>
     
-    <img id="startdemo" src="linear_rainbow.png" style="display:none" />    
-    </body>
+    
+    <table id="samples">
+        <tr>
+            <td>
+                <img src="gradients/diagonal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/horizontal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/linear_rainbow.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/singlehorizontal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/singlevertical.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/solid.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/vertical.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/transparent.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/cooldiag.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/weirdhoriz.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/superlight.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/superlight.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/transdiag.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+    </table>
+</body>
