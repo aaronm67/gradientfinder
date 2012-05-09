@@ -76,7 +76,7 @@
         var stops = this.stops.map(function(s) {
             return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
-        
+
         var css = this.angle + "deg, " + stops.join(",");
         return "background: -webkit-linear-gradient(" + css + ");\n" +
                 "background: -o-linear-gradient(" + css + ");\n" +
@@ -111,7 +111,7 @@
         }
     }
 
-    function vectorToLine(angle, length, digits) {
+    function vectorToLine(angle, length) {
         function pointOfAngle(a) {
             function toRads(d) {
                 return (d * Math.PI) / 180;
@@ -127,17 +127,16 @@
         var endPoint = pointOfAngle(360 - angle);
 
         return {
-            x1: round(startPoint.x * length, digits),
-            y1: round(startPoint.y * length, digits),
-            x2: round(endPoint.x * length, digits),
-            y2: round(endPoint.y * length, digits)
+            x1: startPoint.x * length,
+            y1: startPoint.y * length,
+            x2: endPoint.x * length,
+            y2: endPoint.y * length, 
         };
     }
 
     function getAngle(arr) {
         function getSingleColorAngles(array) {
             var ret = [];
-            console.time("Angles");
             for (var angle = -90; angle <= 90; angle++) {
                 var singlearr = getSingleDimensionalArray(array, angle).map(function(a) {
                     return a.join();
@@ -147,11 +146,7 @@
                 if (singlearr && colorsEqual(singlearr[0], singlearr[singlearr.length - 1], 1)) {
                     ret.push(angle - 90);
                 }
-                else if (ret.length > 0) {
-                    //break;
-                }
             }
-            console.timeEnd("Angles");
             return ret;
         }
 
@@ -182,7 +177,6 @@
         }
 
         var possibles = getSingleColorAngles(arr);
-        
         var angle = getLikely(arr, possibles);
         if (typeof(angle) === "undefined") {
             throw "Couldn't find a gradient angle";
@@ -196,7 +190,7 @@
         var height = arr.length;
         var multiplier = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));        
         var vector = vectorToLine(angle, multiplier);
-        var coords = bresenhamLine(vector.x1, vector.y1, vector.x2, vector.y2);
+        var coords = bresenhamLine(round(vector.x1), round(vector.y1), round(vector.x2), round(vector.y2));
 
         var ret = [];
         for (var i = 0; i < coords.length; i++) {
@@ -206,8 +200,8 @@
             if (typeof(arr[x]) !== "undefined" && typeof(arr[x][y]) !== "undefined") {
                 ret.push(arr[x][y]);
             }
-            
         }
+
         return ret;
     }
 
@@ -332,7 +326,7 @@
             onload(findGradFromCanvas(canvas));
         };
     }
-    
+
     function colorsEqual(c1, c2) {
         var color1 = c1;
         var color2 = c2;
