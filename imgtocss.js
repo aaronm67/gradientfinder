@@ -56,6 +56,13 @@
 
         return true;
     };
+    
+    Color.prototype.distanceFrom = function(color2) {
+        // http://www.compuphase.com/cmetric.htm
+        return Math.sqrt(
+            3 * Math.pow(this.r - color2.r, 2) + 4 * Math.pow(this.g - color2.g, 2) + 2 * Math.pow(this.b - color2.b, 2) + Math.pow(this.a - color2.a, 2)
+        );
+    };
 
     Color.prototype.toString = function() {
         return (this.a === 1) ?
@@ -130,14 +137,14 @@
             x1: startPoint.x * length,
             y1: startPoint.y * length,
             x2: endPoint.x * length,
-            y2: endPoint.y * length, 
+            y2: endPoint.y * length
         };
     }
 
     function getAngle(arr) {
         function getSingleColorAngles(array) {
             var ret = [];
-            for (var angle = -90; angle <= 90; angle++) {
+            for (var angle = 90; angle <= 269; angle++) {
                 var singlearr = getSingleDimensionalArray(array, angle).map(function(a) {
                     return a.join();
                 });
@@ -155,22 +162,23 @@
                 var grad = getSingleDimensionalArray(array, angle);
                 return { 
                     angle: angle,
-                    stops: getStops(grad).length
+                    stops: getStops(grad)
                 };
             });
             sorted = sorted.sort(function(a, b) {
-                if (a.stops === 1) {
-                    return 1;
-                }
-                if (b.stops === 1) {
-                    return -1;
-                }
-                if (a.stops !== b.stops) {
-                    return a.length - b.length;
-                }
-                else {
+                if (a.stops.length === b.stops.length) {
+                    // for same # of stops, we want the angle that provides the most difference in colors
                     return a.angle - b.angle;
                 }
+                // single stops are an edge case, so de-prioritize them
+                if (a.stops.length === 1) {
+                    return 1;
+                }
+                if (b.stops.length === 1) {
+                    return -1;
+                }
+
+                return a.stops.length - b.stops.length;
             });
 
             return sorted[0].angle;
@@ -279,7 +287,7 @@
             };
         });
 
-        return new Gradient(ret, angle + 90);
+        return new Gradient(ret, angle - 90);
     }
 
     function getColorArray(ctx) {
