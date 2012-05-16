@@ -248,6 +248,11 @@
             throw "Invalid coordinates for Bresenham's";
         }
 
+        x1 = Math.round(x1);
+        y1 = Math.round(y1);
+        x2 = Math.round(x2);
+        y2 = Math.round(y2);
+
         var coords = [];
         var dx = Math.abs(x2 - x1);
         var dy = Math.abs(y2 - y1);
