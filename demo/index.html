@@ -36,7 +36,6 @@
             $("body").fileReaderJS(opts).fileClipboard(opts);
             
             $("#samples img").load(function(e) {
-                log("load");
                 var img = this;
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
