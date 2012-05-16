@@ -35,6 +35,18 @@
             
             $("body").fileReaderJS(opts).fileClipboard(opts);
             
+            for (var i = 0; i <= 90; i++) {
+                $("#samples").append("<tr>" +
+                    "<td>" +
+                        "<img src='gradients/generic/" + i + ".png' />" +
+                    "<td>" +
+                        "<div class='preview'></div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<textarea class='css'></textarea>" +
+                "</td>");                    
+            }
+            
             $("#samples img").load(function(e) {
                 var img = this;
                 var canvas = document.createElement("canvas");
