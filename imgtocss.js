@@ -36,7 +36,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-       tolerance = tolerance || 4;
+        tolerance = (typeof(tolerance) === "undefined") ? 4 : tolerance;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -131,7 +131,7 @@
 
         angle = angle % 360;
         var startPoint = pointOfAngle(180 - angle);
-        var endPoint = pointOfAngle(360 - angle);
+        var endPoint = pointOfAngle(0 - angle);
 
         return {
             x1: startPoint.x * length,
@@ -140,18 +140,47 @@
             y2: endPoint.y * length
         };
     }
+    
+    // returns unique values from a sorted array
+    function uniqueArray(arr) {
+        var ret = [];
+        var last;
+
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] !== last) {
+                ret.push(arr[i]);
+                last = arr[i];
+            }
+        }
+        return ret;
+    }
 
     function getAngle(arr) {
         function getSingleColorAngles(array) {
             var ret = [];
             for (var angle = 90; angle <= 269; angle++) {
+                // check to see if the entire array is the same color
                 var singlearr = getSingleDimensionalArray(array, angle).map(function(a) {
-                    return a.join();
+                    return a.join();// convert colors to strings (sorting multidimensional arrays is SLOW)
                 });
-
-                singlearr = singlearr.sort();
-                if (singlearr && colorsEqual(singlearr[0], singlearr[singlearr.length - 1], 1)) {
+                // simple case -- the arrays are 100% identical
+                if (singlearr[0] === singlearr[singlearr.length - 1]) {
                     ret.push(angle - 90);
+                }
+                else {
+                    // slow case -- compare all unique color values with a threshold
+                    var uniquevals = uniqueArray(singlearr);
+                    var first = uniquevals[0];
+                    for (var i = 1; i < uniquevals.length; i++) {
+                        if (!colorsEqual(first, uniquevals[i])) {
+                            break;
+                        }
+                        else {
+                            if (i == uniquevals.length - 1) {
+                                ret.push(angle - 90);
+                            }
+                        }
+                    }
                 }
             }
             return ret;
