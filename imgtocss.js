@@ -48,7 +48,7 @@
         }
         // compare alphas -- treat undefined alpha as opaque
         var aAlpha = (typeof(this.a) === 'undefined') ? 1 : this.a;
-        var bAlpha = (typeof(b.a) === 'undefined') ? 1 : b.a;        
+        var bAlpha = (typeof(b.a) === 'undefined') ? 1 : b.a;
         var aTolerance = tolerance / 25;
         if (Math.abs(aAlpha - bAlpha) > tolerance) {
             return false;
@@ -56,7 +56,7 @@
 
         return true;
     };
-    
+
     Color.prototype.distanceFrom = function(color2) {
         // http://www.compuphase.com/cmetric.htm
         return Math.sqrt(
@@ -140,7 +140,7 @@
             y2: endPoint.y * length
         };
     }
-    
+
     // returns unique values from a sorted array
     function uniqueArray(arr) {
         var ret = [];
@@ -189,7 +189,7 @@
         function getLikely(array, possibles) {
             var sorted = possibles.map(function(angle) {
                 var grad = getSingleDimensionalArray(array, angle);
-                return { 
+                return {
                     angle: angle,
                     stops: getStops(grad)
                 };
@@ -221,11 +221,11 @@
 
         return angle;
     }
-    
+
     function getSingleDimensionalArray(arr, angle) {
         var width = arr[0].length;
         var height = arr.length;
-        var multiplier = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));        
+        var multiplier = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
         var vector = vectorToLine(angle, multiplier);
         var coords = bresenhamLine(round(vector.x1), round(vector.y1), round(vector.x2), round(vector.y2));
 
@@ -243,7 +243,7 @@
     }
 
     // http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-    function bresenhamLine(x1, y1, x2, y2) {    
+    function bresenhamLine(x1, y1, x2, y2) {
         if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
             throw "Invalid coordinates for Bresenham's";
         }
@@ -260,7 +260,7 @@
         var sy = (y1 < y2) ? 1 : -1;
         var err = dx - dy;
 
-        coords.push([x1, y1]);        
+        coords.push([x1, y1]);
         while (!((x1 === x2) && (y1 === y2))) {
             var e2 = err * 2;
             if (e2 > -dy) {
@@ -298,7 +298,7 @@
             }
             // found a stop at the end of the array -- break out of the loop
             else if (end === arr.length - 1 && !startColor.equals(endColor)) {
-                ret.push(end);                                
+                ret.push(end);
             }
         }
         // no stop found -- try again
