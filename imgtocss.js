@@ -158,14 +158,14 @@
     function getAngle(arr) {
         function getSingleColorAngles(array) {
             var ret = [];
-            for (var angle = 90; angle <= 269; angle++) {
+            for (var angle = 0; angle <= 180; angle++) {
                 // check to see if the entire array is the same color
                 var singlearr = getSingleDimensionalArray(array, angle).map(function(a) {
                     return a.join();// convert colors to strings (sorting multidimensional arrays is SLOW)
                 });
                 // simple case -- the arrays are 100% identical
                 if (singlearr[0] === singlearr[singlearr.length - 1]) {
-                    ret.push(angle - 90);
+                    ret.push(angle);
                 }
                 else {
                     // slow case -- compare all unique color values with a threshold
@@ -177,7 +177,7 @@
                         }
                         else {
                             if (i == uniquevals.length - 1) {
-                                ret.push(angle - 90);
+                                ret.push(angle);
                             }
                         }
                     }
@@ -213,7 +213,10 @@
             return sorted[0].angle;
         }
 
-        var possibles = getSingleColorAngles(arr);
+        var possibles = getSingleColorAngles(arr).map(function(angle) {
+            return angle - 90;
+        });
+
         var angle = getLikely(arr, possibles);
         if (typeof(angle) === "undefined") {
             throw "Couldn't find a gradient angle";
@@ -234,8 +237,8 @@
             var x = coords[i][0];
             var y = coords[i][1];
 
-            if (typeof(arr[x]) !== "undefined" && typeof(arr[x][y]) !== "undefined") {
-                ret.push(arr[x][y]);
+            if (typeof(arr[y]) !== "undefined" && typeof(arr[y][x]) !== "undefined") {
+                ret.push(arr[y][x]);
             }
         }
 
@@ -321,7 +324,7 @@
             };
         });
 
-        return new Gradient(ret, angle - 90);
+        return new Gradient(ret, angle);
     }
 
     function getColorArray(ctx) {
