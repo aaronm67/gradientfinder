@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>GradientFinder - Convert your Images into CSS Gradients</title>
         <link rel="stylesheet" href="static/style.css" type="text/css">
     </head>
 
@@ -21,14 +22,15 @@
               <li><a href="#about">About</a></li>
               <li><a href="#examples">Examples</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
-
     <div class="container">
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
+        <h1>
+            CSS Gradient Finder
+        </h1>
+        <div class="hero-unit">
         <div style="float:right; padding-bottom: 15px;">
             <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
             <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
@@ -37,22 +39,28 @@
 
         <div id="filedropper">
             <div id="transparent"></div>
-            <h1>Drop an image here! <br /><small>(to find it's gradient)</small></h1>
+            <h1>Drop an image here! <br /><small>(to find it's CSS gradient)</small></h1>
         </div>
         <textarea id="grad">
 
         </textarea>
 
-        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+        <div class="hide" id="uploaded-image-container">
+            Gradient from this Image: <img id="uploaded-image" />
+        </div>
       </div>
 
       <a name='about'></a>
-      <h2>About</h2>
       <div class="row">
         <div class="span4">
-          <h3>Awesome</h3>
-           <p></p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+            <h3>About</h3>
+           <p>
+               Inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>, Gradient Finder is an entirely
+               in browser way to convert an image to it's CSS gradient.
+           </p>
+           <p>
+                Currently supports only linear gradients.
+           </p>
         </div>
         <div class="span4">
           <h3>Methods:</h3>
@@ -82,193 +90,203 @@ Gradient {
 
       <hr>
 
-      <a name='examples'></a>
+      <a name="examples"></a>
       <h2>Examples</h2>
-      <div class='well'>
-    <table id="samples">
-        <tr>
-            <td>
-                <img data-src="gradients/diagonal.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/horizontal.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/linear_rainbow.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/singlehorizontal.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/singlevertical.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/solid.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/vertical.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/transparent.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/cooldiag.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/weirdhoriz.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/superlight.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/weirddiag.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img data-src="gradients/transdiag.png" />
-            </td>
-            <td>
-                <div class="preview"></div>
-            </td>
-            <td>
-                <div class="canvas"></div>
-            </td>
-            <td>
-                <textarea class="css"></textarea>
-            </td>
-        </tr>
-    </table>
+      <div><a class="btn btn-primary btn-large" id="showExamples" href="#">View</a>
+      <div id="example-container" class="hide">
+          <p>
+                (left is an image, right is the CSS Gradient of that image)
+          </p>
+          <div class='well'>
+            <table id="samples">
+                <tr>
+                    <td>
+                        <img data-src="gradients/diagonal.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/horizontal.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/linear_rainbow.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/singlehorizontal.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/singlevertical.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/solid.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/vertical.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/transparent.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/cooldiag.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td>
+                        <img data-src="gradients/weirdhoriz.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                -->
+                <!--
+                <tr>
+                    <td>
+                        <img data-src="gradients/superlight.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                -->
+                <tr>
+                    <td>
+                        <img data-src="gradients/weirddiag.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img data-src="gradients/transdiag.png" />
+                    </td>
+                    <td>
+                        <div class="preview"></div>
+                    </td>
+                    <td>
+                        <div class="canvas"></div>
+                    </td>
+                    <td>
+                        <textarea class="css"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
       <hr>

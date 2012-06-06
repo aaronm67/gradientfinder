@@ -17,7 +17,8 @@
     border: 1px solid black;
 }
 
-#filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center;}
+#uploaded-image {  height: 50px; }
+#filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center; margin-bottom: 10px; }
 #filedropper h1 { margin-top: 10px;}
 #transparent {
     background: url(checker.png);
@@ -30,7 +31,7 @@
     bottom:0;
 }
 .filedrop { background-color: rgb(255, 200, 200); }
-textarea { width: 800px; height: 200px; }
+textarea { width: 800px; height: 200px; font-family: monospace; }
 .preview { width: 100px; height: 100px; }
 .css { height: 100px; }
 

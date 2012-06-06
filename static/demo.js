@@ -15,8 +15,10 @@ $(function() {
                 var data = e.target.result;
                 GradientFinder.fromUrl(data, function(grad) {
                     var css = grad.toCss();
-                    $("#grad").val(css);
+                    $("#grad").val(css).height(150);
                     $("#filedropper").attr("style", css);
+                    $("#uploaded-image").attr("src", data);
+                    $("#uploaded-image-container").show();
                 });
             }
         }
@@ -24,36 +26,52 @@ $(function() {
 
     $("body").fileReaderJS(opts).fileClipboard(opts);
 
-    for (var i = 0; i <= 90; i+=5) {
-        $("#samples").append("<tr>" +
-            "<td>" +
-                "<img data-src='gradients/generic/" + i + ".png' />" +
-            "<td>" +
-                "<div class='preview'></div>" +
-            "</td>" +
-            "<td>" +
-            "<textarea class='css'></textarea>" +
-        "</td>");
-    }
+    var first = true;
+    $("#showExamples").click(function(e) {
+        e.preventDefault();
+        if (first) {
+            for (var i = 0; i <= 90; i+=5) {
+                $("#samples").append("<tr>" +
+                    "<td>" +
+                        "<img data-src='gradients/generic/" + i + ".png' />" +
+                    "<td>" +
+                        "<div class='preview'></div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<textarea class='css'></textarea>" +
+                "</td>");
+            }
 
-    $("#samples img").load(function(e) {
-        var img = this;
-        var canvas = document.createElement("canvas");
-        var ctx = canvas.getContext("2d");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+            $("#samples img").load(function(e) {
+                var img = this;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
 
-        var grad = GradientFinder.fromCanvas(canvas);
-        var preview = $(img).parent().siblings().find(".preview");
-        //var canvasbox = $(img).parent().siblings().find(".canvas");
-        var css = $(img).parent().siblings().find(".css");
-        preview.attr("style", grad.toCss());
-        //canvasbox.append(grad.toCanvas());
-        css.val(grad.toCss());
-    });
+                var grad = GradientFinder.fromCanvas(canvas);
+                var preview = $(img).parent().siblings().find(".preview");
+                //var canvasbox = $(img).parent().siblings().find(".canvas");
+                var css = $(img).parent().siblings().find(".css");
+                preview.attr("style", grad.toCss());
+                //canvasbox.append(grad.toCanvas());
+                css.val(grad.toCss());
+            });
 
-    $("#samples img").attr("src", function() {
-        return $(this).data("src");
+            $("#samples img").attr("src", function() {
+                return $(this).data("src");
+            });
+        }
+
+        first = false;
+        if ($("#example-container").is(":visible")) {
+            $("#example-container").hide();
+            $(this).text("View");
+        }
+        else {
+            $("#example-container").show();
+            $(this).text("Hide");
+        }
     });
 });
