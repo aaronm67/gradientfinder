@@ -57,13 +57,6 @@
         return true;
     };
 
-    Color.prototype.distanceFrom = function(color2) {
-        // http://www.compuphase.com/cmetric.htm
-        return Math.sqrt(
-            3 * Math.pow(this.r - color2.r, 2) + 4 * Math.pow(this.g - color2.g, 2) + 2 * Math.pow(this.b - color2.b, 2) + Math.pow(this.a - color2.a, 2)
-        );
-    };
-
     Color.prototype.toString = function() {
         return (this.a === 1) ?
           "rgb("  + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ")" :
@@ -255,7 +248,6 @@
         var possibles = getSingleColorAngles(arr).map(function(angle) {
             return angle - 90;
         });
-        log(possibles);
 
         var angle = getLikely(arr, possibles);
         if (typeof(angle) === "undefined") {
