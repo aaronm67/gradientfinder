@@ -84,7 +84,7 @@
         var context = canvas.getContext("2d");
         var data = context.createImageData(canvas.width, canvas.height);
         var graddata = flatten(this.colorarray);
-        
+
         arraycopy(graddata, data.data);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.putImageData(data, 0, 0);
@@ -255,6 +255,7 @@
         var possibles = getSingleColorAngles(arr).map(function(angle) {
             return angle - 90;
         });
+        log(possibles);
 
         var angle = getLikely(arr, possibles);
         if (typeof(angle) === "undefined") {
