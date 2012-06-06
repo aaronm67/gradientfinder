@@ -36,7 +36,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-        tolerance = (typeof(tolerance) === "undefined") ? 4 : tolerance;
+        tolerance = (typeof(tolerance) === "undefined") ? 6 : tolerance;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -383,16 +383,16 @@
         return colors;
     }
 
-    function findGradFromCanvas(canvas) {
+    function fromCanvas(canvas) {
         var ctx = canvas.getContext("2d");
         var colors = getColorArray(ctx);
         var stops = calculateGradient(colors);
         return stops;
     }
 
-    function findGrad(dataurl, onload) {
+    function fromUrl(url, onload) {
         var image = new Image();
-        image.src = dataurl;
+        image.src = url;
         image.onload = function () {
             var img = this;
             var canvas = document.createElement("canvas");
@@ -400,7 +400,7 @@
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            onload(findGradFromCanvas(canvas));
+            onload(fromCanvas(canvas));
         };
     }
 
@@ -418,8 +418,8 @@
     }
 
     exports.GradientFinder = {
-        fromDataUrl: findGrad,
-        fromCanvas: findGradFromCanvas,
+        fromUrl: fromUrl,
+        fromCanvas: fromCanvas,
         colorsEqual: colorsEqual
     };
 })(window);
