@@ -1,43 +1,229 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Imagetocss by aaronm67</title>
+    <head>
+        <link rel="stylesheet" href="static/style.css" type="text/css">
+    </head>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <body>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="without-description">
-        <h1>Imagetocss</h1>
-        <p></p>
-        <p class="view"><a href="https://github.com/aaronm67/imagetocss">View the Project on GitHub <small>aaronm67/imagetocss</small></a></p>
-        <ul>
-          <li><a href="https://github.com/aaronm67/imagetocss/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/aaronm67/imagetocss/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/aaronm67/imagetocss">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>imagetocss</h1>
 
-<p>A javascript port of:
-<a href="https://github.com/bluesmoon/pngtocss">https://github.com/bluesmoon/pngtocss</a></p>
-      </section>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">GradientFinder</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#examples">Examples</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
     </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+
+        <div id="filedropper">
+            <div id="transparent"></div>
+            <h1>Drop an image here! <br /><small>(to find it's gradient)</small></h1>
+        </div>
+        <textarea id="grad">
+
+        </textarea>
+
+        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>Awesome</h2>
+           <p></p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Airtight</h2>
+           <p></p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Amazing</h2>
+          <p></p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+    <table id="samples">
+        <tr>
+            <td>
+                <img src="gradients/diagonal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/horizontal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/linear_rainbow.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/singlehorizontal.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/singlevertical.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/solid.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/vertical.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/transparent.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/cooldiag.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/weirdhoriz.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/superlight.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/weirddiag.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="gradients/transdiag.png" />
+            </td>
+            <td>
+                <div class="preview"></div>
+            </td>
+            <td>
+                <textarea class="css"></textarea>
+            </td>
+        </tr>
+    </table>
+
+
+      <hr>
+
     <footer>
-      <p>Project maintained by <a href="https://github.com/aaronm67">aaronm67</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        <p>&copy; Company 2012</p>
     </footer>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-    
-  </body>
+
+    </div>
+
+    <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="static/filereader.js"></script>
+    <script type="text/javascript" src="static/tinycolor.js"></script>
+    <script type="text/javascript" src="../imgtocss.js"></script>
+    <script type="text/javascript" src="static/demo.js"></script>
+</body>
 </html>
