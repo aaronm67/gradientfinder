@@ -1,90 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript">
-            // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
-            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
-        </script>
-        <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="static/filereader.js"></script>
-        <script type="text/javascript" src="static/tinycolor.js"></script>
-        <script type="text/javascript" src="../imgtocss.js"></script>
         <link rel="stylesheet" href="static/style.css" type="text/css">
-        <script type="text/javascript">
-        $(function() {
-            $("body")[0].ondragstart = function() { return false; };
-            $("#filedropper")[0].ondragstart = function() { return false; };
-            var opts = {
-                readAsMap: {
-                    '.*': 'DataURL'
-                },
-                dragClass: "filedrop",
-                on: {
-                    error: function() {
-                        alert("You must run this on a webserver to get results");
-                    },
-                    load: function (e, file) {
-                        var data = e.target.result;
-                        GradientCalc.findGrad(data, function(grad) {
-                            var css = grad.toCss();
-                            $("#grad").val(css);
-                            $("#filedropper").attr("style", css);
-                        });
-                    }
-                }
-            };
-
-            $("body").fileReaderJS(opts).fileClipboard(opts);
-
-            for (var i = 0; i <= 90; i++) {
-                $("#samples").append("<tr>" +
-                    "<td>" +
-                        "<img src='gradients/generic/" + i + ".png' />" +
-                    "<td>" +
-                        "<div class='preview'></div>" +
-                    "</td>" +
-                    "<td>" +
-                    "<textarea class='css'></textarea>" +
-                "</td>");
-            }
-
-            $("#samples img").load(function(e) {
-                var img = this;
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-
-                var gradCss = GradientCalc.findGradFromCanvas(canvas).toCss();
-                var preview = $(img).parent().siblings().find(".preview");
-                var css = $(img).parent().siblings().find(".css");
-                preview.attr("style", gradCss);
-                css.val(gradCss);
-            });
-        });
-        </script>
-        <style>
-            #filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center;}
-            #filedropper h1 { margin-top: 10px;}
-            #transparent {
-                background: url(static/checker.png);
-                z-index: -1;
-                padding: 0;
-                position:absolute;
-                left:0;
-                right:0;
-                top:0;
-                bottom:0;
-            }
-            .filedrop { background-color: rgb(255, 200, 200); }
-            textarea { width: 800px; height: 200px; }
-            .preview { width: 100px; height: 100px; }
-            .css { height: 100px; }
-
-            #samples textarea { display:none; }
-            #grad { height: 20px; }
-        </style>
     </head>
 
     <body>
@@ -116,9 +33,6 @@
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
 
-
-
-
         <div id="filedropper">
             <div id="transparent"></div>
             <h1>Drop an image here! <br /><small>(to find it's gradient)</small></h1>
@@ -133,32 +47,23 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="span4">
-          <h2>Heading</h2>
-           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <h2>Awesome</h2>
+           <p></p>
           <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
         <div class="span4">
-          <h2>Heading</h2>
-           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <h2>Airtight</h2>
+           <p></p>
           <p><a class="btn" href="#">View details &raquo;</a></p>
        </div>
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <h2>Amazing</h2>
+          <p></p>
           <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
       </div>
 
       <hr>
-
-      <footer>
-        <p>&copy; Company 2012</p>
-      </footer>
-
-    </div>
-
-
-
 
     <table id="samples">
         <tr>
@@ -305,4 +210,20 @@
             </td>
         </tr>
     </table>
+
+
+      <hr>
+
+    <footer>
+        <p>&copy; Company 2012</p>
+    </footer>
+
+    </div>
+
+    <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="static/filereader.js"></script>
+    <script type="text/javascript" src="static/tinycolor.js"></script>
+    <script type="text/javascript" src="../imgtocss.js"></script>
+    <script type="text/javascript" src="static/demo.js"></script>
 </body>
+</html>
