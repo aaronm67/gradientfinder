@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+        </script>
+        <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="tinycolor.js"></script>
+        <script type="text/javascript" src="../imgtocss.js"></script>
+        <script type="text/javascript" src="qunit.js"></script>
+        <link rel="stylesheet" href="qunit.css" type="text/css">
+<script type="text/javascript">
+    function random() {
+        var f = function() {
+            return Math.floor(Math.random() * 255);
+        }
+
+        return tinycolor({
+            r: f(),
+            g: f(),
+            b: f(),
+            a: Math.max(Math.round( (f() / 255) * 100 ) / 100, .1)
+        }).toString();
+    }
+
+    var gradTests = {
+        /*
+        singleStop: {
+            angle: -90,
+            param: [0, 0, 0, 1],
+            stops: {
+                "0": random()
+            }
+        },
+        singleVertical: {
+            angle: 0,
+            param: [0, 0, 0, 1],
+            stops: {
+                "0": "rgba(255, 255, 255, 1)",
+                "1": "rgb(0, 0, 0)"
+            }
+        },
+        multiVertical: {
+            angle: 0,
+            param: [0, 0, 0, 1],
+            stops: {
+                "0": "rgba(203, 65, 246, 0.88)",
+                "0.25": "rgba(255, 255, 255, 0.1)",
+                "0.50": "rgba(243, 81, 53, 0.25)",
+                "0.75": "rgba(203, 65, 246, 1)",
+                "1": "rgba(82, 232, 212, 0.1)"
+            }
+        },
+        singleHorizontal: {
+            angle: -90,
+            param: [0, 0, 1, 0],
+            stops: {
+                "0": "rgba(1, 53, 112, 0.87)",
+                "1": "rgba(82, 232, 212, 0.15)"
+            }
+        },
+        multiHorizontal: {
+            angle: -90,
+            param: [0, 0, 1, 0 ],
+            stops: {
+                "0": "rgb(0, 0, 0)",
+                "0.25": "rgb(255, 0, 232)",
+                "0.50": "rgb(59, 42, 108)",
+                "0.75": "rgb(68, 0, 0)",
+                "1": "rgb(255, 255, 255)"
+            }
+        },*/
+        singleDiagLtr: {
+            angle: "60",
+            param: [0, (258/300), .5, 0],
+            stops: {
+                "0": "rgb(0, 0, 0)",
+                "1": "rgb(255, 255, 255)"
+            }
+        },
+        oddAspect: {
+            angle: "60",
+            param: [0, (258/300), .5, 0],
+            stops: {
+                "0": "rgb(0, 0, 0)",
+                "1": "rgb(255, 255, 255)"
+            },
+            width: 300,
+            height: 100
+        }
+    };
+
+    $(function() {
+        QUnit.init();
+        var key, canvas, context, grad, gradient, idx, calcgrad;
+        for (key in gradTests) {
+            if (gradTests.hasOwnProperty(key)) {
+                grad = gradTests[key];
+                var width = grad.width || 500;
+                var height = grad.height || 500;                
+                canvas = document.createElement('canvas');
+                context = canvas.getContext('2d')
+                canvas.width = width;
+                canvas.height = height;
+                var param = [grad.param[0] * width, grad.param[1] * height, grad.param[2] * width, grad.param[3] * height];
+                gradient = context.createLinearGradient.apply(context, param);
+
+                for (idx in grad.stops) {
+                    if (grad.stops.hasOwnProperty(idx)) {
+                        gradient.addColorStop(parseFloat(idx), grad.stops[idx]);
+                    }
+                }
+
+                context.fillStyle = gradient;
+                context.fillRect(0, 0, width, height);
+                $("body").append(canvas);
+                testGrad(key, grad, canvas);                
+            }
+        }
+
+        function testGrad(name, grad, canvas) {
+            var calcgrad = GradientCalc.findGradFromCanvas(canvas);
+            var expectedStops = 0;
+            for (var i in grad.stops) {
+                expectedStops++;
+            }
+
+            test(name + " Stops", function() {
+                expect(expectedStops + 1);
+                equal(calcgrad.angle, grad.angle);
+                calcgrad.stops.forEach(function(s) {   
+                    var found = false;
+                    for (var i in grad.stops) {
+                        var diff = Math.abs(s.idx - i);
+                        if (diff <= 0.050) {
+                            var a = tinycolor(s.color);
+                            var b = tinycolor(grad.stops[i]);
+                            ok(GradientCalc.colorsEqual(a.toRgb(), b.toRgb()), "Calc:" +  s.idx + " " + a.toRgbString() + "  Exp: " +i + " " + b.toRgbString());
+                            found = true;
+                            break;
+                        }
+                    }
+                });
+            });
+        }
+    });
+</script>
+
+</head>
+    <body>
+        <h1 id="qunit-header">QUnit example</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests">
+    </body>
+</html>
+
+
