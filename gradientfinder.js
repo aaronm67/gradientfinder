@@ -70,10 +70,42 @@
               "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
     };
 
-    function Gradient(stops, angle, length) {
+    function Gradient(stops, angle, colorarray) {
         this.stops = stops;
         this.angle = angle;
+        this.colorarray = colorarray;
     }
+
+    Gradient.prototype.toCanvas = function() {
+        var canvas = document.createElement("canvas");
+        canvas.width = this.colorarray[0].length;
+        canvas.height = this.colorarray.length;
+
+        var context = canvas.getContext("2d");
+        var data = context.createImageData(canvas.width, canvas.height);
+        var graddata = flatten(this.colorarray);
+        
+        arraycopy(graddata, data.data);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.putImageData(data, 0, 0);
+        return canvas;
+
+        function flatten(arr) {
+            var flat = [];
+            for (var i = 0, l = arr.length; i < l; i++) {
+                flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
+            }
+
+            return flat;
+        }
+
+        // copy arr1 into arr2
+        function arraycopy(arr1, arr2) {
+            for (var i = 0; i < arr1.length; i++) {
+                arr2[i] = arr1[i];
+            }
+        }
+    };
 
     Gradient.prototype.toCss = function() {
         if (this.stops.length === 1) {
@@ -324,7 +356,7 @@
             };
         });
 
-        return new Gradient(ret, angle);
+        return new Gradient(ret, angle, arr);
     }
 
     function getColorArray(ctx) {
