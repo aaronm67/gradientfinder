@@ -24,10 +24,10 @@ $(function() {
 
     $("body").fileReaderJS(opts).fileClipboard(opts);
 
-    for (var i = 0; i <= 90; i++) {
+    for (var i = 0; i <= 90; i+=5) {
         $("#samples").append("<tr>" +
             "<td>" +
-                "<img src='gradients/generic/" + i + ".png' />" +
+                "<img data-src='gradients/generic/" + i + ".png' />" +
             "<td>" +
                 "<div class='preview'></div>" +
             "</td>" +
@@ -46,10 +46,14 @@ $(function() {
 
         var grad = GradientFinder.fromCanvas(canvas);
         var preview = $(img).parent().siblings().find(".preview");
-        var canvasbox = $(img).parent().siblings().find(".canvas");
+        //var canvasbox = $(img).parent().siblings().find(".canvas");
         var css = $(img).parent().siblings().find(".css");
         preview.attr("style", grad.toCss());
         //canvasbox.append(grad.toCanvas());
         css.val(grad.toCss());
+    });
+
+    $("#samples img").attr("src", function() {
+        return $(this).data("src");
     });
 });
