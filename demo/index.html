@@ -27,6 +27,7 @@
                     load: function (e, file) {
                         var data = e.target.result;
                         GradientCalc.findGrad(data, function(grad) {
+                            var css = grad.toCss();
                             $("#grad").val(css);
                             $("#filedropper").attr("style", css);
                         });
@@ -77,7 +78,7 @@
                 top:0;
                 bottom:0;
             }
-            .filedrop { background-color: red; }
+            .filedrop { background-color: rgb(255, 200, 200); }
             textarea { width: 800px; height: 200px; }
             .preview { width: 100px; height: 100px; }
             .css { height: 100px; }
