@@ -6,8 +6,6 @@
 
     <body>
 
-
-
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
@@ -29,9 +27,13 @@
     </div>
 
     <div class="container">
-
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
+        <div style="float:right; padding-bottom: 15px;">
+            <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/imgtocss.js">Javascript</a>
+            <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
+        </div>
+        <br style="clear: right;" />
 
         <div id="filedropper">
             <div id="transparent"></div>
@@ -52,15 +54,29 @@
           <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
         <div class="span4">
-          <h2>Airtight</h2>
-           <p></p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-       </div>
-        <div class="span4">
-          <h2>Amazing</h2>
+          <h2>Methods:</h2>
           <p></p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <p>
+<pre>
+GradientFinder {
+    fromDataUrl: function(url, onload),
+    fromCanvas: function(canvas)
+};
+</pre>
         </div>
+        <div class="span4">
+          <h2>Returns:</h2>
+           <p></p>
+          <p>
+<pre>
+Gradient {
+    stops: [ array ],
+    angle: integer,
+    toCss: function() // returns String
+};
+</pre>
+          </p>
+       </div>
       </div>
 
       <hr>
