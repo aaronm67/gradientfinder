@@ -228,7 +228,14 @@
             });
             sorted = sorted.sort(function(a, b) {
                 if (a.stops.length === b.stops.length) {
-                    // for same # of stops, we want the angle that provides the most difference in colors
+                    // prioritize straight angles over diagonal
+                    if (a.angle === -90 || a.angle === 0 || a.angle === -90) {
+                        return -1;
+                    }
+                    if (b.angle === 90 || b.angle === 0 || b.angle === -90) {
+                        return 1;
+                    }
+
                     return a.angle - b.angle;
                 }
                 // single stops are an edge case, so de-prioritize them
