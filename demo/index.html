@@ -9,6 +9,7 @@
         <script type="text/javascript" src="static/filereader.js"></script>
         <script type="text/javascript" src="static/tinycolor.js"></script>
         <script type="text/javascript" src="../imgtocss.js"></script>
+        <link rel="stylesheet" href="static/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="static/style.css" type="text/css">
         <script type="text/javascript">
         $(function() {
@@ -32,9 +33,9 @@
                     }
                 }
             };
-            
+
             $("body").fileReaderJS(opts).fileClipboard(opts);
-            
+
             for (var i = 0; i <= 90; i++) {
                 $("#samples").append("<tr>" +
                     "<td>" +
@@ -44,9 +45,9 @@
                     "</td>" +
                     "<td>" +
                     "<textarea class='css'></textarea>" +
-                "</td>");                    
+                "</td>");
             }
-            
+
             $("#samples img").load(function(e) {
                 var img = this;
                 var canvas = document.createElement("canvas");
@@ -61,36 +62,104 @@
                 preview.attr("style", gradCss);
                 css.val(gradCss);
             });
-        });                    
+        });
         </script>
         <style>
-            #filedropper { width: 300px; height: 300px; border: 1px solid black; }
-            #transparent { 
+            #filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center;}
+            #filedropper h1 { margin-top: 10px;}
+            #transparent {
                 background: url(static/checker.png);
-                height: 300px;
                 z-index: -1;
                 padding: 0;
                 position:absolute;
-                width: 300px;                
+                left:0;
+                right:0;
+                top:0;
+                bottom:0;
             }
             .filedrop { background-color: red; }
             textarea { width: 800px; height: 200px; }
             .preview { width: 100px; height: 100px; }
             .css { height: 100px; }
+
+            #samples textarea { display:none; }
+            #grad { height: 20px; }
         </style>
     </head>
-    
+
     <body>
 
-    <div id="transparent"></div>
-    <div id="filedropper">
-        Drop an image here to find it's gradient
+
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">GradientFinder</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#examples">Examples</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
     </div>
-    <textarea id="grad">
-    
-    </textarea>
-    
-    
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+
+
+
+
+        <div id="filedropper">
+            <div id="transparent"></div>
+            <h1>Drop an image here! <br /><small>(to find it's gradient)</small></h1>
+        </div>
+        <textarea id="grad">
+
+        </textarea>
+
+        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>Heading</h2>
+           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Heading</h2>
+           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2012</p>
+      </footer>
+
+    </div>
+
+
+
+
     <table id="samples">
         <tr>
             <td>
