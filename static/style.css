@@ -32,5 +32,6 @@ textarea { width: 800px; height: 200px; }
 .preview { width: 100px; height: 100px; }
 .css { height: 100px; }
 
+#samples { margin:0 auto;}
 #samples textarea { display:none; }
 #grad { height: 20px; }
