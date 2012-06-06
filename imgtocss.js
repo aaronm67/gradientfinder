@@ -176,7 +176,7 @@
                             break;
                         }
                         else {
-                            if (i == uniquevals.length - 1) {
+                            if (i === uniquevals.length - 1) {
                                 ret.push(angle);
                             }
                         }
