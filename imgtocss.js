@@ -385,9 +385,9 @@
         return Color.prototype.equals.apply(color1, [color2]);
     }
 
-    exports.GradientCalc = {
-        findGrad: findGrad,
-        findGradFromCanvas: findGradFromCanvas,
+    exports.GradientFinder = {
+        fromDataUrl: findGrad,
+        fromCanvas: findGradFromCanvas,
         colorsEqual: colorsEqual
     };
 })(window);

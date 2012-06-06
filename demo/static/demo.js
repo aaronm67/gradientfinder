@@ -1,6 +1,4 @@
-
-            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
-
+window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
 $(function() {
     $("body")[0].ondragstart = function() { return false; };
     $("#filedropper")[0].ondragstart = function() { return false; };
@@ -15,7 +13,7 @@ $(function() {
             },
             load: function (e, file) {
                 var data = e.target.result;
-                GradientCalc.findGrad(data, function(grad) {
+                GradientFinder.fromDataUrl(data, function(grad) {
                     var css = grad.toCss();
                     $("#grad").val(css);
                     $("#filedropper").attr("style", css);
@@ -46,7 +44,7 @@ $(function() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
 
-        var gradCss = GradientCalc.findGradFromCanvas(canvas).toCss();
+        var gradCss = GradientFinder.fromCanvas(canvas).toCss();
         var preview = $(img).parent().siblings().find(".preview");
         var css = $(img).parent().siblings().find(".css");
         preview.attr("style", gradCss);
