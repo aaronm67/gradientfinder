@@ -15,8 +15,10 @@ $(function() {
                 var data = e.target.result;
                 GradientFinder.fromUrl(data, function(grad) {
                     var css = grad.toCss();
-                    $("#grad").val(css).height(100);
+                    $("#grad").val(css).height(150);
                     $("#filedropper").attr("style", css);
+                    $("#uploaded-image").attr("src", data);
+                    $("#uploaded-image-container").show();
                 });
             }
         }
