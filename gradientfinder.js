@@ -36,7 +36,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-        tolerance = (typeof(tolerance) === "undefined") ? 4 : tolerance;
+        tolerance = (typeof(tolerance) === "undefined") ? 6 : tolerance;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -70,10 +70,42 @@
               "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
     };
 
-    function Gradient(stops, angle, length) {
+    function Gradient(stops, angle, colorarray) {
         this.stops = stops;
         this.angle = angle;
+        this.colorarray = colorarray;
     }
+
+    Gradient.prototype.toCanvas = function() {
+        var canvas = document.createElement("canvas");
+        canvas.width = this.colorarray[0].length;
+        canvas.height = this.colorarray.length;
+
+        var context = canvas.getContext("2d");
+        var data = context.createImageData(canvas.width, canvas.height);
+        var graddata = flatten(this.colorarray);
+        
+        arraycopy(graddata, data.data);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.putImageData(data, 0, 0);
+        return canvas;
+
+        function flatten(arr) {
+            var flat = [];
+            for (var i = 0, l = arr.length; i < l; i++) {
+                flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
+            }
+
+            return flat;
+        }
+
+        // copy arr1 into arr2
+        function arraycopy(arr1, arr2) {
+            for (var i = 0; i < arr1.length; i++) {
+                arr2[i] = arr1[i];
+            }
+        }
+    };
 
     Gradient.prototype.toCss = function() {
         if (this.stops.length === 1) {
@@ -196,7 +228,14 @@
             });
             sorted = sorted.sort(function(a, b) {
                 if (a.stops.length === b.stops.length) {
-                    // for same # of stops, we want the angle that provides the most difference in colors
+                    // prioritize straight angles over diagonal
+                    if (a.angle === -90 || a.angle === 0 || a.angle === -90) {
+                        return -1;
+                    }
+                    if (b.angle === 90 || b.angle === 0 || b.angle === -90) {
+                        return 1;
+                    }
+
                     return a.angle - b.angle;
                 }
                 // single stops are an edge case, so de-prioritize them
@@ -324,7 +363,7 @@
             };
         });
 
-        return new Gradient(ret, angle);
+        return new Gradient(ret, angle, arr);
     }
 
     function getColorArray(ctx) {
@@ -351,16 +390,16 @@
         return colors;
     }
 
-    function findGradFromCanvas(canvas) {
+    function fromCanvas(canvas) {
         var ctx = canvas.getContext("2d");
         var colors = getColorArray(ctx);
         var stops = calculateGradient(colors);
         return stops;
     }
 
-    function findGrad(dataurl, onload) {
+    function fromUrl(url, onload) {
         var image = new Image();
-        image.src = dataurl;
+        image.src = url;
         image.onload = function () {
             var img = this;
             var canvas = document.createElement("canvas");
@@ -368,7 +407,7 @@
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            onload(findGradFromCanvas(canvas));
+            onload(fromCanvas(canvas));
         };
     }
 
@@ -386,8 +425,8 @@
     }
 
     exports.GradientFinder = {
-        fromDataUrl: findGrad,
-        fromCanvas: findGradFromCanvas,
+        fromUrl: fromUrl,
+        fromCanvas: fromCanvas,
         colorsEqual: colorsEqual
     };
 })(window);

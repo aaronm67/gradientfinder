@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         ' */'
     },
     lint: {
-      files: ['grunt.js', 'imgtocss.js']
+      files: ['grunt.js', 'gradientfinder.js']
     },
     exclude: '.git .gitignore build/** node_modules/** grunt.js package.json *.md'.split(' '),
     qunit: {
@@ -17,8 +17,8 @@ module.exports = function(grunt) {
     },
     min: {
       dist: {
-        src: ['<banner:meta.banner>', 'imgtocss.js'],
-        dest: 'imgtocss.min.js'
+        src: ['<banner:meta.banner>', 'gradientfinder.js'],
+        dest: 'gradientfinder.min.js'
       }
     },
     jshint: {

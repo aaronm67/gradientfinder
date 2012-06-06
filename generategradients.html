@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            // http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+            window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+        </script>
+        <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="static/filereader.js"></script>
+        <script type="text/javascript" src="static/tinycolor.js"></script>
+        <script type="text/javascript" src="../gradientfinder.js"></script>
+        <link rel="stylesheet" href="static/style.css" type="text/css">
+        <script type="text/javascript">
+            (function() {
+                function getDownloadImage(canvas, name) {
+                    var src= canvas.toDataURL("image/png");  
+                    var dragoutData = "image/png:" + name + ".png:" + src;
+        
+                    var img = new Image();
+                    img.src = src;
+                    img.setAttribute("draggable", "true");
+                    img.ondragstart = function(e) {
+                        e.dataTransfer.setData("DownloadURL", dragoutData);
+                    };
+
+                    return img;
+                }
+
+                function makeDownloadable(canvas, name) {
+                    
+                    canvas.setAttribute("draggable", "true");
+                    canvas.ondragstart = function(e) {
+                        var src= canvas.toDataURL("image/png");  
+                        var dragoutData = "image/png:" + name + ".png:" + src;
+                        
+                        e.dataTransfer.setData("DownloadURL", dragoutData);
+                    };
+                    
+                }
+
+                var default_stops = { 
+                    0 : "blue",
+                    .5 : "white",
+                    1 : "black"
+                };
+
+                function drawShape(dimensions, angle, filename, stops){
+                    var rads = angle * (Math.PI / 180);
+                    var multiplier = Math.sqrt( 2 * Math.pow(dimensions, 2));
+
+                    stops = stops || default_stops;
+                    var canvas = $("<canvas>")[0];
+                    canvas.width = dimensions;
+                    canvas.height = dimensions;
+                    var ctx = canvas.getContext('2d');
+                    // Create Linear Gradients
+                    var lingrad = ctx.createLinearGradient(0,0,Math.cos(rads) * dimensions, Math.sin(rads) * dimensions);
+                    for (var i in stops) {
+                        lingrad.addColorStop(i, stops[i]);
+                    }
+
+                    // assign gradients to fill and stroke styles
+                    ctx.fillStyle = lingrad;
+                    ctx.fillRect(0,0,dimensions,dimensions);          
+                    $("body").append(getDownloadImage(canvas, filename));
+                    $("body").append("<br>" + filename + "<br>");
+                }
+
+                $(function() {
+                    var width = 100; 
+                    for (var i = 0; i <= 90; i++) {
+                        drawShape(width, i, i);
+                    }
+                });
+            })();
+        </script>
+        <style>
+            #filedropper { width: 300px; height: 300px; border: 1px solid black; }
+            #transparent { 
+                background: url(static/checker.png);
+                height: 300px;
+                z-index: -1;
+                padding: 0;
+                position:absolute;
+                width: 300px;                
+            }
+            .filedrop { background-color: red; }
+            textarea { width: 800px; height: 200px; }
+            .preview { width: 100px; height: 100px; }
+            .css { height: 100px; }
+        </style>
+    </head>
+    
+    <body>
+    </body>
+</html>

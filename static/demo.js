@@ -13,7 +13,7 @@ $(function() {
             },
             load: function (e, file) {
                 var data = e.target.result;
-                GradientFinder.fromDataUrl(data, function(grad) {
+                GradientFinder.fromUrl(data, function(grad) {
                     var css = grad.toCss();
                     $("#grad").val(css);
                     $("#filedropper").attr("style", css);
@@ -44,10 +44,12 @@ $(function() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
 
-        var gradCss = GradientFinder.fromCanvas(canvas).toCss();
+        var grad = GradientFinder.fromCanvas(canvas);
         var preview = $(img).parent().siblings().find(".preview");
+        var canvasbox = $(img).parent().siblings().find(".canvas");
         var css = $(img).parent().siblings().find(".css");
-        preview.attr("style", gradCss);
-        css.val(gradCss);
+        preview.attr("style", grad.toCss());
+        //canvasbox.append(grad.toCanvas());
+        css.val(grad.toCss());
     });
 });
