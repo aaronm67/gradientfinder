@@ -15,4 +15,4 @@ See browser support here: http://caniuse.com/canvas.
 * TinyColor: http://bgrins.github.com/TinyColor/
 * jQuery: http://www.jquery.com
 * Twitter Bootstrap: http://twitter.github.com/bootstrap/
-* QUnit: https://github.com/jquery/qunit
+* QUnit: https://github.com/jquery/qunit 
