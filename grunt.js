@@ -30,6 +30,7 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         sub: true,
+        loopfunc: true,
         undef: false,
         boss: true,
         eqnull: true,
@@ -43,6 +44,6 @@ module.exports = function(grunt) {
   });
 
   //grunt.registerTask('default', 'lint qunit min');
-  grunt.registerTask('default', 'min');
+  grunt.registerTask('default', 'lint min');
 
 };
