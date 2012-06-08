@@ -338,11 +338,11 @@
 
     function isStop(arr, start, end) {
         var startColor = getPixel(arr, start);
-        var increment = round(arr.length / 5)
+        var increment = round(arr.length / 5);
         for (var i = end; i > start; i-= increment) {
             var endColor = getPixel(arr, i);
             var average = Color.getAvg(startColor, endColor);
-            var mid = getMid(arr, start, end)
+            var mid = getMid(arr, start, end);
             if (!average.equals(mid)) {
                 return false;
             }
