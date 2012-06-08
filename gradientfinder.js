@@ -208,6 +208,7 @@
                     }
                 }
             }
+
             return ret;
         }
 
@@ -242,6 +243,10 @@
                 return a.stops.length - b.stops.length;
             });
 
+            if (sorted.length === 0) {
+                throw "Couldn't find gradient angle";
+            }
+
             return sorted[0].angle;
         }
 
@@ -250,10 +255,6 @@
         });
 
         var angle = getLikely(arr, possibles);
-        if (typeof(angle) === "undefined") {
-            throw "Couldn't find a gradient angle";
-        }
-
         return angle;
     }
 
@@ -279,6 +280,11 @@
 
     // http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
     function bresenhamLine(x1, y1, x2, y2) {
+        x1 = parseFloat(x1);
+        y1 = parseFloat(y1);
+        x2 = parseFloat(x2);
+        y2 = parseFloat(y2);
+
         if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
             throw "Invalid coordinates for Bresenham's";
         }
@@ -345,18 +351,22 @@
     }
 
     function calculateGradient(arr) {
-        var angle = getAngle(arr);
-        var lineArray = getSingleDimensionalArray(arr, angle);
-        var stops = getStops(lineArray);
-        var ret = stops.map(function(s) {
-            var idx = round(s / (lineArray.length - 1), 2);
-            return {
-                idx: idx,
-                color: getPixel(lineArray, s)
-            };
-        });
+        try {
+            var angle = getAngle(arr);
+            var lineArray = getSingleDimensionalArray(arr, angle);
+            var stops = getStops(lineArray);
+            var ret = stops.map(function(s) {
+                var idx = round(s / (lineArray.length - 1), 2);
+                return {
+                    idx: idx,
+                    color: getPixel(lineArray, s)
+                };
+            });
 
-        return new Gradient(ret, angle, arr);
+            return new Gradient(ret, angle, arr);
+        } catch(e) {
+            return false;
+        }
     }
 
     function getColorArray(ctx) {

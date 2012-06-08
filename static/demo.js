@@ -14,11 +14,13 @@ $(function() {
             load: function (e, file) {
                 var data = e.target.result;
                 GradientFinder.fromUrl(data, function(grad) {
-                    var css = grad.toCss();
-                    $("#grad").val(css).height(150);
-                    $("#filedropper").attr("style", css);
-                    $("#uploaded-image").attr("src", data);
-                    $("#uploaded-image-container").show();
+                    if (grad) {
+                        var css = grad.toCss();
+                        $("#grad").val(css).height(150);
+                        $("#filedropper").attr("style", css);
+                        $("#uploaded-image").attr("src", data);
+                        $("#uploaded-image-container").show();
+                    }
                 });
             }
         }
@@ -51,12 +53,12 @@ $(function() {
                 ctx.drawImage(img, 0, 0);
 
                 var grad = GradientFinder.fromCanvas(canvas);
-                var preview = $(img).parent().siblings().find(".preview");
-                //var canvasbox = $(img).parent().siblings().find(".canvas");
-                var css = $(img).parent().siblings().find(".css");
-                preview.attr("style", grad.toCss());
-                //canvasbox.append(grad.toCanvas());
-                css.val(grad.toCss());
+                if (grad) {
+                    var preview = $(img).parent().siblings().find(".preview");
+                    var css = $(img).parent().siblings().find(".css");
+                    preview.attr("style", grad.toCss());
+                    css.val(grad.toCss());
+                }
             });
 
             $("#samples img").attr("src", function() {
