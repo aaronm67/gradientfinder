@@ -1,4 +1,37 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Slab:400,700');
+
+.dropper {
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+#uploaded-image {  height: 50px; }
+#filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center; margin-bottom: 10px; }
+#filedropper h1 { margin-top: 10px;}
+#transparent {
+    background: url(checker.png);
+    z-index: -1;
+    padding: 0;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}
+
+body.filedrop #filedropper {  background-color: rgb(255, 200, 200);  }
+textarea { width: 800px; height: 200px; font-family: monospace; }
+.preview { width: 100px; height: 100px; }
+.css { height: 100px; }
+
+#samples { margin:0 auto;}
+#samples textarea { display:none; }
+#grad { height: 20px; width: 100%; }
+#error { color: red; }
+
+
+/* Twitter Bootstrap */
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block;}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1;}
 audio:not([controls]){display:none;}
@@ -813,32 +846,3 @@ footer.footer{border-top:2px solid #f5f3dc;}
 .show{display:block;}
 .invisible{visibility:hidden;}
 .hero-unit { position: relative; z-index: 1; }
-
-.dropper {
-    width: 200px;
-    height: 200px;
-    display: inline-block;
-    border: 1px solid black;
-}
-
-#uploaded-image {  height: 50px; }
-#filedropper { height: 300px; border: 1px solid black; border-radius: 3px; position:relative; text-align: center; margin-bottom: 10px; }
-#filedropper h1 { margin-top: 10px;}
-#transparent {
-    background: url(checker.png);
-    z-index: -1;
-    padding: 0;
-    position:absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-}
-.filedrop { background-color: rgb(255, 200, 200); }
-textarea { width: 800px; height: 200px; font-family: monospace; }
-.preview { width: 100px; height: 100px; }
-.css { height: 100px; }
-
-#samples { margin:0 auto;}
-#samples textarea { display:none; }
-#grad { height: 20px; }
