@@ -240,7 +240,7 @@
                     return -1;
                 }
 
-                return a.stops.length - b.stops.length;
+                return a.angle - b.angle;
             });
 
             if (sorted.length === 0) {
@@ -319,26 +319,35 @@
         return coords;
     }
 
+    function isStop(arr, start, end) {
+        var startColor = getPixel(arr, start);
+        var increment = round(arr.length / 5)
+        for (var i = end; i > start; i-= increment) {
+            var endColor = getPixel(arr, i);
+            var average = Color.getAvg(startColor, endColor);
+            var mid = getMid(arr, start, end)
+            if (!average.equals(mid)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     function getStops(arr, start, end) {
-        var ret = [];
         start = start || 0;
         end = end || arr.length - 1;
 
-        var startColor = getPixel(arr, start);
-        var endColor = getPixel(arr, end);
-        var average = Color.getAvg(startColor, endColor);
-        var mid = getMid(arr, start, end);
-
+        var ret = [];
         // we found a stop -- add it
-        if (average.equals(mid)) {
+        if (isStop(arr, start, end)) {
             ret.push(start);
-
             // we're not at the end -- search between STOP and ARR.LEN for more stops
             if (end !== arr.length - 1) {
                 ret = ret.concat(getStops(arr, end, arr.length - 1));
             }
             // found a stop at the end of the array -- break out of the loop
-            else if (end === arr.length - 1 && !startColor.equals(endColor)) {
+            else if (end === arr.length - 1 && !(ret.length === 1 && getPixel(arr, 0).equals(getPixel(arr, end)))) {
                 ret.push(end);
             }
         }
