@@ -36,7 +36,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-        tolerance = (typeof(tolerance) === "undefined") ? 6 : tolerance;
+        tolerance = (typeof(tolerance) === "undefined") ? 20 : tolerance;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
