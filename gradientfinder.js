@@ -1,7 +1,37 @@
 (function(exports) {
+
     function round(num, digits) {
         digits = digits || 0;
         return Math.round(num * Math.pow(10, digits)) / Math.pow(10, digits);
+    }
+
+    function unique(arr, func) {
+        var values = {};
+        var ret = [];
+        for(var i = 0, l = arr.length; i < l; ++i) {
+            var val = func ? func(arr[i]) : arr[i];
+            if (!values.hasOwnProperty(val)) {
+                ret.push(arr[i]);
+                values[val] = 1;
+            }
+        }
+        return ret;
+    }
+
+    function flatten(arr) {
+        var flat = [];
+        for (var i = 0, l = arr.length; i < l; i++) {
+            flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
+        }
+
+        return flat;
+    }
+
+    // copy arr1 into arr2
+    function arraycopy(arr1, arr2) {
+        for (var i = 0; i < arr1.length; i++) {
+            arr2[i] = arr1[i];
+        }
     }
 
     var Color = function(arr) {
@@ -82,30 +112,17 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.putImageData(data, 0, 0);
         return canvas;
-
-        function flatten(arr) {
-            var flat = [];
-            for (var i = 0, l = arr.length; i < l; i++) {
-                flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
-            }
-
-            return flat;
-        }
-
-        // copy arr1 into arr2
-        function arraycopy(arr1, arr2) {
-            for (var i = 0; i < arr1.length; i++) {
-                arr2[i] = arr1[i];
-            }
-        }
     };
 
     Gradient.prototype.toCss = function() {
         if (this.stops.length === 1) {
             return "background-color: " + this.stops[0].color.toString();
-       }
+        }
 
-        var stops = this.stops.map(function(s) {
+        var stops = unique(this.stops, function(s) {
+            return round(s.idx * 100);
+        });
+        stops = stops.map(function(s) {
             return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
 
