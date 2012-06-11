@@ -1,7 +1,37 @@
 (function(exports) {
+
     function round(num, digits) {
         digits = digits || 0;
         return Math.round(num * Math.pow(10, digits)) / Math.pow(10, digits);
+    }
+
+    function unique(arr, func) {
+        var values = {};
+        var ret = [];
+        for(var i = 0, l = arr.length; i < l; ++i) {
+            var val = func ? func(arr[i]) : arr[i];
+            if (!values.hasOwnProperty(val)) {
+                ret.push(arr[i]);
+                values[val] = 1;
+            }
+        }
+        return ret;
+    }
+
+    function flatten(arr) {
+        var flat = [];
+        for (var i = 0, l = arr.length; i < l; i++) {
+            flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
+        }
+
+        return flat;
+    }
+
+    // copy arr1 into arr2
+    function arraycopy(arr1, arr2) {
+        for (var i = 0; i < arr1.length; i++) {
+            arr2[i] = arr1[i];
+        }
     }
 
     var Color = function(arr) {
@@ -36,7 +66,7 @@
     };
 
     Color.prototype.equals = function(b, tolerance) {
-        tolerance = (typeof(tolerance) === "undefined") ? 6 : tolerance;
+        tolerance = (typeof(tolerance) === "undefined") ? 20 : tolerance;
         if (Math.abs(this.r - b.r) > tolerance) {
             return false;
         }
@@ -82,30 +112,17 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.putImageData(data, 0, 0);
         return canvas;
-
-        function flatten(arr) {
-            var flat = [];
-            for (var i = 0, l = arr.length; i < l; i++) {
-                flat = flat.concat((arr[i].length) ? flatten(arr[i]) : arr[i]);
-            }
-
-            return flat;
-        }
-
-        // copy arr1 into arr2
-        function arraycopy(arr1, arr2) {
-            for (var i = 0; i < arr1.length; i++) {
-                arr2[i] = arr1[i];
-            }
-        }
     };
 
     Gradient.prototype.toCss = function() {
         if (this.stops.length === 1) {
             return "background-color: " + this.stops[0].color.toString();
-       }
+        }
 
-        var stops = this.stops.map(function(s) {
+        var stops = unique(this.stops, function(s) {
+            return round(s.idx * 100);
+        });
+        stops = stops.map(function(s) {
             return s.color.toString() + " " + round(s.idx * 100) + "%";
         });
 
@@ -240,7 +257,7 @@
                     return -1;
                 }
 
-                return a.stops.length - b.stops.length;
+                return a.angle - b.angle;
             });
 
             if (sorted.length === 0) {
@@ -319,26 +336,35 @@
         return coords;
     }
 
+    function isStop(arr, start, end) {
+        var startColor = getPixel(arr, start);
+        var increment = round(arr.length / 5);
+        for (var i = end; i > start; i-= increment) {
+            var endColor = getPixel(arr, i);
+            var average = Color.getAvg(startColor, endColor);
+            var mid = getMid(arr, start, end);
+            if (!average.equals(mid)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     function getStops(arr, start, end) {
-        var ret = [];
         start = start || 0;
         end = end || arr.length - 1;
 
-        var startColor = getPixel(arr, start);
-        var endColor = getPixel(arr, end);
-        var average = Color.getAvg(startColor, endColor);
-        var mid = getMid(arr, start, end);
-
+        var ret = [];
         // we found a stop -- add it
-        if (average.equals(mid)) {
+        if (isStop(arr, start, end)) {
             ret.push(start);
-
             // we're not at the end -- search between STOP and ARR.LEN for more stops
             if (end !== arr.length - 1) {
                 ret = ret.concat(getStops(arr, end, arr.length - 1));
             }
             // found a stop at the end of the array -- break out of the loop
-            else if (end === arr.length - 1 && !startColor.equals(endColor)) {
+            else if (end === arr.length - 1 && !(ret.length === 1 && getPixel(arr, 0).equals(getPixel(arr, end)))) {
                 ret.push(end);
             }
         }

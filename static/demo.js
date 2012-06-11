@@ -20,6 +20,11 @@ $(function() {
                         $("#filedropper").attr("style", css);
                         $("#uploaded-image").attr("src", data);
                         $("#uploaded-image-container").show();
+                        $("#error").hide();
+                    }
+                    else {
+                        $("#error").show();
+                        $("#uploaded-image-container").hide();
                     }
                 });
             }

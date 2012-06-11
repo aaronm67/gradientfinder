@@ -7,29 +7,19 @@
 
     <body>
 
-    <div class="navbar hide">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">GradientFinder</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#examples">Examples</a></li>
-            </ul>
-          </div>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <h1>
+                    <a class="brand" href="#">
+                        CSS Gradient Finder
+                    </a>
+                </h1>
+            </div>
         </div>
-      </div>
     </div>
     <div class="container">
-        <h1>
-            CSS Gradient Finder
-        </h1>
+
         <div class="hero-unit">
         <div style="float:right; padding-bottom: 15px;">
             <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
@@ -39,12 +29,15 @@
 
         <div id="filedropper">
             <div id="transparent"></div>
-            <h1>Drop an image here! <br /><small>(to find it's CSS gradient)</small></h1>
+            <h1>Drop an image here! <br /><small style="color: black;">(to find its CSS gradient)</small></h1>
         </div>
         <textarea id="grad">
 
         </textarea>
 
+        <div class="hide" id="error">
+            Couldn't find a gradient from that image...
+        </div>
         <div class="hide" id="uploaded-image-container">
             Gradient from this Image: <img id="uploaded-image" />
         </div>
@@ -56,7 +49,7 @@
             <h3>About</h3>
            <p>
                Inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>, Gradient Finder is an entirely
-               in browser way to convert an image to it's CSS gradient.
+               in browser way to convert an image to its CSS gradient.
            </p>
            <p>
                 Currently supports only linear gradients.
@@ -302,5 +295,16 @@ Gradient {
     <script type="text/javascript" src="static/tinycolor.js"></script>
     <script type="text/javascript" src="gradientfinder.js"></script>
     <script type="text/javascript" src="static/demo.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-32456048-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 </body>
 </html>
