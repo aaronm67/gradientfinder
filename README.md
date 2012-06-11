@@ -16,3 +16,6 @@ See browser support here: http://caniuse.com/canvas.
 * jQuery: http://www.jquery.com
 * Twitter Bootstrap: http://twitter.github.com/bootstrap/
 * QUnit: https://github.com/jquery/qunit
+
+### License
+https://github.com/aaronm67/gradientfinder/blob/master/LICENSE
