@@ -106,7 +106,7 @@ a:hover{color:#ebd90b;text-decoration:underline;}
 .container-fluid:after{clear:both;}
 p{margin:0 0 10.5px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;}p small{font-size:12px;color:#999999;}
 .lead{margin-bottom:21px;font-size:20px;font-weight:200;line-height:31.5px;}
-h1,h2,h3,h4,h5,h6{margin:0;font-family:'Josefin Slab',serif;font-weight:700;color:inherit;text-rendering:optimizelegibility;}h1 small,h2 small,h3 small,h4 small,h5 small,h6 small{font-weight:normal;color:#999999;}
+h1,h2,h3,h4,h5,h6{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-weight:700;color:inherit;text-rendering:optimizelegibility;}h1 small,h2 small,h3 small,h4 small,h5 small,h6 small{font-weight:normal;color:#999999;}
 h1{font-size:30px;line-height:42px;}h1 small{font-size:18px;}
 h2{font-size:24px;line-height:42px;}h2 small{font-size:18px;}
 h3{font-size:18px;line-height:31.5px;}h3 small{font-size:14px;}
@@ -747,7 +747,7 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .hide{display:none;}
 .show{display:block;}
 .invisible{visibility:hidden;}
-.navbar .brand,legend,.btn,.navbar .nav>li>a,div.subnav li>a,.navbar-text{font-family:'Josefin Slab',serif;font-weight:700;}
+.navbar .brand,legend,.btn,.navbar .nav>li>a,div.subnav li>a,.navbar-text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;,serif;font-weight:700;}
 h3{font-size:20px;}
 h4{font-size:16px;}
 h5{font-size:14px;}
