@@ -240,7 +240,7 @@
             sorted = sorted.sort(function(a, b) {
                 if (a.stops.length === b.stops.length) {
                     // prioritize straight angles over diagonal
-                    if (a.angle === -90 || a.angle === 0 || a.angle === -90) {
+                    if (a.angle === 90 || a.angle === 0 || a.angle === -90) {
                         return -1;
                     }
                     if (b.angle === 90 || b.angle === 0 || b.angle === -90) {
