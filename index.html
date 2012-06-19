@@ -9,39 +9,43 @@
 
     <div class="navbar">
         <div class="navbar-inner">
-            <div class="container">
                 <h1>
-                    <a class="brand" href="#">
-                        CSS Gradient Finder
-                    </a>
+                    <div class="container">
+                        <a class="brand" href="#">
+                            CSS Gradient Finder
+                        </a>
+                    </div>
                 </h1>
             </div>
         </div>
     </div>
     <div class="container">
-
         <div class="hero-unit">
-        <div style="float:right; padding-bottom: 15px;">
-            <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
-            <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
-        </div>
-        <br style="clear: right;" />
+            <div style="float:right; padding-bottom: 15px; text-align: right;">
+                <a href="http://twitter.com/aaronm67">@aaronm67</a>
+                <br><br>
+                <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
+                <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
+            </div>
+            <br style="clear: right;" />
 
-        <div id="filedropper">
-            <div id="transparent"></div>
-            <h1>Drop an image here! <br /><small style="color: black;">(to find its CSS gradient)</small></h1>
-        </div>
-        <textarea id="grad">
+            <div id="filedropper">
+                <div id="transparent"></div>
+                <h1>Drop an image here! <br /><small style="color: black;">(to find its CSS gradient)</small></h1>
+            </div>
+            <textarea id="grad">
 
-        </textarea>
+            </textarea>
 
-        <div class="hide" id="error">
-            Couldn't find a gradient from that image...
+            <div class="hide" id="error">
+                Couldn't find a gradient from that image...
+            </div>
         </div>
         <div class="hide" id="uploaded-image-container">
             Gradient from this Image: <img id="uploaded-image" />
         </div>
       </div>
+      <div class="container">
 
       <a name='about'></a>
       <div class="row">
@@ -50,6 +54,9 @@
            <p>
                Gradient Finder is an entirely in browser way to convert an image to its
                <a href="http://dev.w3.org/csswg/css3-images/#gradients">CSS gradient</a>.
+           </p>
+           <p>
+                Written by <a href="http://aaronm67.foliotek.me">Aaron Marasco</a>
            </p>
            <p>
                 Inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>
@@ -218,7 +225,6 @@ Gradient {
                         <textarea class="css"></textarea>
                     </td>
                 </tr>
-                <!--
                 <tr>
                     <td>
                         <img data-src="gradients/weirdhoriz.png" />
@@ -233,23 +239,6 @@ Gradient {
                         <textarea class="css"></textarea>
                     </td>
                 </tr>
-                -->
-                <!--
-                <tr>
-                    <td>
-                        <img data-src="gradients/superlight.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                -->
                 <tr>
                     <td>
                         <img data-src="gradients/weirddiag.png" />
@@ -281,11 +270,14 @@ Gradient {
             </table>
         </div>
     </div>
+</div>
 
       <hr>
 
     <footer>
-        <p><a href="https://raw.github.com/aaronm67/gradientfinder/master/LICENSE">&copy; Aaron Marasco 2012</a></p>
+        <div class="container">
+            <p><a href="https://raw.github.com/aaronm67/gradientfinder/master/LICENSE">&copy; Aaron Marasco 2012</a></p>
+        </div>
     </footer>
 
     </div>
