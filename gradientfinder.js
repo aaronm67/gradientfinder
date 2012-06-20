@@ -42,9 +42,10 @@
         this.r = arr[0];
         this.g = arr[1];
         this.b = arr[2];
-        if (arr.length === 4) {
-            this.a = round(arr[3] / 255, 2);
-        }
+
+        // arr[3] == alpha - if not present, default to opaque (255)
+        this.a = (arr.length === 4) ? arr[3] : 255;
+
         if (typeof(this.r) === 'undefined' || typeof(this.g) === 'undefined' || typeof(this.b) === 'undefined') {
             throw "Invalid Color Array passed in";
         }
@@ -77,9 +78,8 @@
             return false;
         }
         // compare alphas -- treat undefined alpha as opaque
-        var aAlpha = (typeof(this.a) === 'undefined') ? 1 : this.a;
-        var bAlpha = (typeof(b.a) === 'undefined') ? 1 : b.a;
-        var aTolerance = tolerance / 25;
+        var aAlpha = (typeof(this.a) === 'undefined') ? 255 : this.a;
+        var bAlpha = (typeof(b.a) === 'undefined') ? 255 : b.a;
         if (Math.abs(aAlpha - bAlpha) > tolerance) {
             return false;
         }
@@ -88,9 +88,9 @@
     };
 
     Color.prototype.toString = function() {
-        return (this.a === 1) ?
+        return (this.a === 255) ?
           "rgb("  + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ")" :
-              "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round(this.a, 2) + ")";
+              "rgba(" + round(this.r) + ", " + round(this.g) + ", " + round(this.b) + ", " + round((this.a / 255), 2) + ")";
     };
 
     function Gradient(stops, angle, colorarray) {
@@ -119,6 +119,7 @@
             return "background-color: " + this.stops[0].color.toString();
         }
 
+        // round all stops to the nearest full percent
         var stops = unique(this.stops, function(s) {
             return round(s.idx * 100);
         });
