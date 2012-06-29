@@ -1,0 +1,451 @@
+#gradient-type-tabs ul{
+    display:none;
+}
+
+.alert-info {
+    font-size: 10px;
+}
+
+.ui-tabs {
+    background: transparent;
+    position:relative;
+}
+#output-tabs {
+    margin: 0 275px;
+    min-width: 400px;
+    margin-top:-10px;
+}
+
+/*
+.region {
+    float:left;
+    position:relative;
+    padding: 4px;
+    width: 350px;
+    background: #efefef;
+    border-radius: 1px;
+}
+*/
+
+#output-tabs textarea {
+    margin: 10px 2%;
+    padding: 3%;
+    width: 90%;
+    overflow: auto;
+    white-space: pre;
+    word-wrap: normal;
+}
+
+.toolbar {
+    background: #DDD;
+    padding-left: 9px;
+    position:relative;
+    height:44px;
+    line-height:24px;
+    vertical-align: middle;
+    border-bottom: solid 13px #99A;
+}
+.toolbar > a {
+
+display: inline-block;
+vertical-align: middle;
+line-height: 44px;
+}
+.toolbar .alert-warning {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    padding: 3px;
+}
+.toolbar:before {
+    content: '';
+    position: absolute;
+    box-shadow: 0 2px 9px #aaa;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 5px;
+    z-index: -1;
+    display: block;
+}
+.toolbar .btn {
+    padding: 3px 5px;
+}
+
+header {
+    background: #efefef;
+    background: -webkit-linear-gradient(top, rgb(239, 239, 239) 0%, rgb(219, 219, 219) 100%);
+    border: solid 2px #ccc;
+    padding: 1px 10px;
+    border-left:none;
+    border-right:none;
+    margin-top: 5px;
+}
+header h1 {
+    float: left;
+}
+header div {
+    float: right;
+    line-height: 32px;
+    vertical-align: middle;
+}
+.toolbar .btn-toolbar {
+    float:right;
+    vertical-align: middle;
+}
+.btn-toolbar {
+    margin:0;
+    padding: 4px;
+}
+
+#container {
+    margin: 0 20px;
+    padding-top: 30px;
+    margin-top: 0px;
+    position:relative;;
+}
+#guides {
+    display:none;
+    background: orange;
+    overflow:hidden;
+    position:relative;
+}
+.guide { position:absolute; pointer-events: none;}
+.guide-x { top:0; bottom:0; height: 100%; width: 1px; background: #ccc; border-right: solid 1px #333; opacity: .1; }
+.guide-y { left:0; right:0; width: 100%; height: 1px; background:green; }
+
+
+#log {
+    margin: 30px 0;
+    font-size: 20px;
+}
+
+.backfill {
+    background: url(../../img/checker.png);
+    /*width: 300px;*/
+    height: 300px;
+    padding: 0;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: solid 2px #CCC;
+    position:relative;
+}
+#output-svg .backfill, #output-canvas .backfill {
+    width: 300px;
+}
+#gradient-preview {
+    position:absolute;
+    top:0; left:0; bottom:0; right:0;
+}
+
+em {
+    background: #2d2d2d;
+    color: #b9b9b9;
+    padding: 4px 10px;
+    border-radius: 10px;
+    display:inline-block;
+    margin-top: 20px;
+    font-style: normal;
+}
+
+.swatches {
+    width: 90%;
+    margin: 3px auto;
+}
+
+.swatches ul {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.swatches li {
+    display:inline-block;
+    width: 20px;
+    height: 20px;
+    border: solid 2px #333;
+    outline: solid 1px white;
+    margin: 3px;
+}
+.swatches .alert {
+    position:relative;
+}
+
+
+#stops {
+    position:relative;
+    width: 100%;
+    height: 170px;
+    padding-top: 70px;
+}
+#track {
+    margin: 0 25px;
+    border: 1px solid black;
+    background: rgba(0, 0, 0, .2);
+    position:relative;
+}
+
+#tracktop {
+    height: 10px;
+    border-bottom: solid 1px #333;
+    background: url(../img/checker.png);
+    position:relative;
+    cursor: pointer;
+}
+#trackbottom {
+    height: 20px;
+    position:relative;
+    border-top: solid 1px #333;
+    cursor: pointer;
+}
+
+
+#currentstop {
+}
+
+
+.alpha-slider-container {
+    position:relative;
+}
+.label-alpha {font-size: 8px;
+    /*
+    position:absolute;
+    right:0;
+    top:0;*/
+}
+.gradient-picker {
+    padding-top: 20px;
+}
+.gradient-picker .ui-slider {
+    display: none;
+    height: 44px;
+    position: absolute;
+    left: -21px;
+    top: -5px;
+    background: -webkit-linear-gradient(bottom, transparent 0%, rgba(0, 0, 0, 1) 100%);
+}
+.gradient-picker .ui-slider:after {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    content: '';
+    display:block;
+    background: url(../../img/checker.png);
+    z-index:-1;
+    border: solid 1px #222;
+    border-radius: 0;
+}
+.alpha.active .ui-slider {
+    display:block;
+    width: 10px;
+}
+.ui-slider .ui-slider-handle {
+    height: 6px;
+    background: rgba(255, 255, 255, .9);
+    border: solid 1px #222;
+    border-radius:0;
+}
+
+#save-current {
+    margin: 0;
+    position: absolute;
+    right: 2px;
+    top: 3px;
+}
+#save-current.disabled .icon-star-empty, #save-current .icon-star {
+    display:none;
+}
+#save-current.disabled .icon-star {
+    display:inline-block;
+}
+
+
+.stop:hover .sp-replacer, .stop.active .sp-replacer {
+    border-color: #F0C49B;
+}
+
+.stop {
+    position:absolute;
+    width: 30px;
+    background: #ddd;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 5px #ccc;
+    border: solid 1px #bbb;
+    text-align: center;
+    padding: 4px 3px;
+    opacity:.9;
+    -webkit-transition: top .1s linear;
+    -moz-transition: top .1s linear;
+    -ms-transition: top .1s linear;
+    transition: top .1s linear;
+}
+
+.stop:hover {
+    cursor: move;
+    z-index: 3;
+}
+.stop.active {
+    cursor: move;
+    z-index: 2;
+}
+
+.stop-handle {
+    position:absolute;
+    left: 8px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #222;
+}
+.color .stop-handle {
+    top: -10px;
+}
+.alpha .stop-handle {
+    border-color: #222 transparent transparent;
+    border-style: solid;
+    border-width: 10px 10px 0;
+    bottom: -10px;
+}
+
+.color:hover .stop-handle, .color.active .stop-handle {
+    border-color: transparent transparent #F0C49B;
+}
+
+.alpha:hover .stop-handle, .alpha.active .stop-handle {
+    border-color: #F0C49B transparent transparent;
+}
+
+
+.stop button {
+    padding: 4px;
+    line-height: 10px;
+    zoom: .8;
+    right: -10px;
+    position: absolute;
+    border-radius: 11px;
+}
+
+.alpha button {
+    top: -13px;
+}
+.color button {
+    bottom: -13px;
+}
+
+.color {
+    top: 42px;
+    padding-bottom:10px;
+}
+.stop.color.almost-removed {
+    top: 52px;
+    opacity: .5;
+}
+
+.alpha {
+    top: -63px;
+    padding-top:10px;
+}
+.stop.alpha.almost-removed {
+    top: -73px;
+    opacity: .5;
+}
+
+.stop:hover, .stop.active {
+    border: dotted 1px orange;
+    outline: none;
+    opacity:1;
+}
+.inc {
+    display:block;
+    width: 30px;
+    position:absolute;
+    top: 60px;
+    text-align:center;
+    font-size: 10px;
+}
+.label-offset {
+    font-size: 7px;
+}
+.filler, .top-filler {
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom:0;
+}
+#addstop {
+    position:absolute;
+}
+
+    /*
+#tip {display:none;
+    position:absolute;
+    right:0;
+    position:absolute;
+    left: -20px;
+    padding-left: 25px;
+    top: 300px;
+    font-size: .8em;
+    display: none;
+
+}
+*/
+#current-angle {
+    height: 34px;
+    width: 40px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-left: -3px;
+}
+
+/* UI Anglepicker Modifications */
+#anglepicker {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+}
+.angle .add-on {
+
+height: 34px;
+}
+#anglepicker:hover, #anglepicker.ui-anglepicker-dragging {
+    opacity: 1;
+}
+
+/* Spectrum modifications */
+.sp-picker-container {
+    width: 200px;
+}
+.sp-container.sp-flat {
+    position: absolute;
+    top: 15px;
+    left: -52px;
+}
+.stop .sp-replacer {
+    display:block;
+    width: 23px;
+    padding:1px;
+    margin: 3px auto;
+}
+.stop .sp-preview {
+
+width: 93%;
+}
+.sp-button-container {
+    display:none !important;
+}
+
+/*
+.sp-container {
+    opacity: .1;
+}
+.stop.active .sp-container {
+    opacity: 1;
+}*/
+
+.sp-dd {
+    display:none;
+}

@@ -3,68 +3,134 @@
     <head>
         <title>GradientFinder - Convert your Images into CSS Gradients</title>
         <meta name="Description" content="An entirely in browser way to convert an image to its CSS3 Gradient" />
-        <link rel="stylesheet" href="static/style.css" type="text/css">
+        <link rel="stylesheet" href="compiled/style.css">
+
+        <style id="custom-style"></style>
     </head>
     <body>
 
-    <div class="navbar">
-        <div class="navbar-inner">
-                <h1>
-                    <div class="container">
-                        <a class="brand" href="#">
-                            CSS Gradient Finder
-                        </a>
-                    </div>
-                </h1>
+    <header class="clearfix">
+        <h1><a href=".">GradientFinder</a></h1>
+        <div>
+            <strong>BUILT BY</strong>
+            <a href="http://twitter.com/aaronm67">@aaronm67</a>
+            (and <a href="http://twitter.com/bgrins">@bgrins</a>)
+        </div>
+    </header>
+
+    <div class="toolbar clearfix">
+
+            <a href="https://twitter.com/intent/tweet?text=I visited %23gradientfinder to convert an image to a CSS gradient!" class="twitter-share-button">Tweet #gradientfinder</a>
+
+            <div class="alert alert-warning">
+                GradientFinder is a quick way to find a gradient from an image!  <a href='#about'>Read More</a>
+            </div>
+        <div class="btn-toolbar hide">
+            <div class="btn-group">
+
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="hero-unit">
-            <div style="float:right; padding-bottom: 15px; text-align: right;">
-                <a href="http://twitter.com/aaronm67">@aaronm67</a>
-                <br><br>
-                <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
-                <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
-            </div>
-            <br style="clear: right;" />
 
+    <div class="container">
+
+        <div class="hero-unit main-section">
             <div id="filedropper">
+                <h3>Drop an image here!</h3>
+                <strong>To find its CSS gradient</strong>
                 <div id="transparent"></div>
-                <h1>Drop an image here! <br /><small style="color: black;">(to find its CSS gradient)</small></h1>
             </div>
             <textarea id="grad">
 
             </textarea>
 
+            <form class="form-inline" style="margin-bottom: 0;">
+                <label class="checkbox"><input id="applyBody" type="checkbox" />Preview</label>
+            </form>
+
+            <div class="hide" id="uploaded-image-container">
+                Gradient from this Image: <img id="uploaded-image" />
+            </div>
             <div class="hide" id="error">
                 Couldn't find a gradient from that image...
             </div>
         </div>
-        <div class="hide" id="uploaded-image-container">
-            Gradient from this Image: <img id="uploaded-image" />
+
+
+        <div id="stops-container" class="main-section">
+            <h3>Gradient Generator</h3>
+
+            <div class='alert alert-info hide'>
+            Move alpha or color stops by dragging them across the track.<br />
+            Click on the track to add a new stop.
+            </div>
+
+            <div id="gradient-picker">
+                <strong>Pick your color and alpha stops.</strong>
+                <br />
+                <div id="stops">
+                    <div id='track'>
+                        <div id='tracktop'><div class='top-filler'></div></div>
+                        <div id='trackbottom'></div>
+                    </div>
+                    <div id="guides"></div>
+                </div>
+
+                <div id="currentstop"></div>
+
+                <strong>Choose your angle.</strong>
+
+                <div class='controls'>
+                    <div class="angle input-prepend">
+                        <span id="angle-label" class="add-on"><div id="anglepicker"></div></span>
+                        <input id="current-angle" />
+                    </div>
+
+                    <em id="tip" class="hide">
+                        Tip: If you hold shift, you can snap to 15 degree increments
+                    </em>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="container">
+    </div>
+      <div class="container content">
 
       <a name='about'></a>
       <div class="row">
-        <div class="span4">
+        <div class="span12">
             <h3>About:</h3>
            <p>
                Gradient Finder is an entirely in browser way to convert an image to its
                <a href="http://dev.w3.org/csswg/css3-images/#gradients">CSS gradient</a>.
+               You can also generate CSS gradients and make changes to the files you choose!
+           </p>
+
+           <p>
+                It was written by <a href="http://aaronm67.foliotek.me">Aaron Marasco</a> and <a href="http://briangrinstead.com">Brian Grinstead</a>
            </p>
            <p>
-                Written by <a href="http://aaronm67.foliotek.me">Aaron Marasco</a>
-           </p>
-           <p>
-                Inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>
+                It was (partially) inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>.  The main things that are different about GradientFinder is that it accepts more image types than pngs, it accepts arbitrary angles, and it can <strong>run in your browser</strong>!
            </p>
         </div>
-        <div class="span4">
+       </div>
+
+      <div class="row">
+        <div class="span12">
+            <h3>Open Source:</h3>
+            <p>
+                The GradientFinder library is open source.  To use it, include the script like so:
+            </p>
+            <pre>&lt;script type="text/javascript" src="gradientfinder.js"&gt;&lt;/script&gt;</pre>
+            <p>
+                <a class="btn btn-primary btn-large" href="https://raw.github.com/aaronm67/gradientfinder/master/gradientfinder.js">Javascript</a>
+                <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
+            </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
           <h3>Methods:</h3>
-          <p></p>
+          <p>The following methods are exposed from the global GradientFinder object.</p>
           <p>
 <pre>
 GradientFinder {
@@ -73,9 +139,9 @@ GradientFinder {
 };
 </pre>
         </div>
-        <div class="span4">
+        <div class="span6">
           <h3>Returns:</h3>
-           <p></p>
+           <p>This is the signature of the methods exposed from the return object.</p>
           <p>
 <pre>
 Gradient {
@@ -92,6 +158,7 @@ Gradient {
 
       <a name="examples"></a>
       <h2>Examples</h2>
+      <p>Here you can view a lot of gradient examples.  They don't open until you press the button, because it can be slow to load them all at once!
       <div><a class="btn btn-primary btn-large" id="showExamples" href="#">View</a>
       <div id="example-container" class="hide">
           <p>
@@ -115,7 +182,7 @@ Gradient {
                 </tr>
                 <tr>
                     <td>
-                        <img data-src="gradients/horizontal.png" />
+                        <img data-src="gradients/singlehorizontal.png" />
                     </td>
                     <td>
                         <div class="preview"></div>
@@ -276,17 +343,19 @@ Gradient {
 
     <footer>
         <div class="container">
-            <p><a href="https://raw.github.com/aaronm67/gradientfinder/master/LICENSE">&copy; Aaron Marasco 2012</a></p>
+            <p><a href="https://raw.github.com/aaronm67/gradientfinder/master/LICENSE">&copy; Aaron Marasco &amp; Brian Grinstead 2012</a></p>
         </div>
     </footer>
 
     </div>
 
-    <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="static/filereader.js"></script>
-    <script type="text/javascript" src="static/tinycolor.js"></script>
-    <script type="text/javascript" src="gradientfinder.js"></script>
-    <script type="text/javascript" src="static/demo.js"></script>
+    <img id="default-grad" src="gradients/linear_rainbow.png" style="display:none" />
+
+    <script type="text/javascript" src="./gradientfinder.js"></script>
+    <script src="./compiled/framework.js"></script>
+    <script src="./compiled/plugin.js"></script>
+    <script src="./compiled/gradient.js"></script>
+    <script src="./compiled/demo.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-32456048-1']);

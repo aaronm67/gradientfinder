@@ -457,6 +457,8 @@
     exports.GradientFinder = {
         fromUrl: fromUrl,
         fromCanvas: fromCanvas,
-        colorsEqual: colorsEqual
+        colorsEqual: colorsEqual,
+        Gradient: Gradient,
+        Color: Color
     };
 })(window);
