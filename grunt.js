@@ -20,15 +20,19 @@ module.exports = function(grunt) {
         staging: staging,
         output: output,
         usemin: {
-            files: ['index.html']
+            html: ['./index.html']
         },
         exclude: '.git .gitignore build/** node_modules/** grunt.js package.json *.md'.split(' '),
         lint: {
             files: ['grunt.js', 'js/**/*.js', 'test/**/*.js']
         },
         concat: {
+            finder: {
+                src: ['gradientfinder.js' ],
+                dest: 'compiled/gradientfinder.min.js'
+            },
             framework: {
-                src: ['<banner:meta.bannerJquery>', 'static/jquery-1.7.2.min.js', 'static/jquery-ui.js', 'static/tinycolor.js', 'static/utils.js', 'static/plugin/*.js' ],
+                src: ['static/jquery-1.7.2.min.js', 'static/jquery-ui.js', 'static/tinycolor.js', 'static/utils.js', 'static/plugin/*.js' ],
                 dest: 'compiled/framework.js'
             },
             demo: {
@@ -37,6 +41,10 @@ module.exports = function(grunt) {
             }
         },
         min: {
+            finder: {
+                src: ['<banner:meta.bannerFinder>', '<config:concat.finder.dest>'],
+                dest: 'compiled/gradientfinder.min.js'
+            },
             framework: {
                 src: ['<banner:meta.bannerJquery>', '<config:concat.framework.dest>'],
                 dest: 'compiled/framework.js'
@@ -75,5 +83,5 @@ module.exports = function(grunt) {
         grunt.file.copy("index_dev.html", "index.html");
     });
 
-    grunt.registerTask('default', 'lint copy usemin concat min');
+    grunt.registerTask('default', 'lint copy concat min usemin');
 };
