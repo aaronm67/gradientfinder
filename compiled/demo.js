@@ -1,3 +1,134 @@
-/*GradientFinder - Copyright (c) 2012 Aaron Marasco https://github.com/aaronm67/gradientfinder/raw/master/LICENSE
-    FileReader.js - Copyright 2012 Brian Grinstead - MIT License. http://github.com/bgrins/filereader.js */
-(function(a){function e(a,b){function e(a){var b=[],c=a.clipboardData||{},e=c.items||[];for(var f=0;f<e.length;f++){var g=e[f].getAsFile();if(g){var h=(new RegExp("image/(.*)")).exec(g.type);if(h){var i=h[1];g.name="clipboard"+f+"."+i,b.push(g)}}}b.length&&(j(b,d),a.preventDefault(),a.stopPropagation())}if(!c.enabled)return;var d=l(l({},c.opts),b);a.addEventListener("paste",e,!1)}function f(a,b){function e(a){j(a.target.files,d)}if(!c.enabled)return;var d=l(l({},c.opts),b);a.addEventListener("change",e,!1)}function g(a,b){function f(b){b.stopPropagation(),b.preventDefault(),e&&o(a,e),j(b.dataTransfer.files,d)}function g(b){e&&n(a,e),b.stopPropagation(),b.preventDefault()}function h(b){e&&o(a,e)}function i(b){e&&n(a,e),b.stopPropagation(),b.preventDefault()}if(!c.enabled)return;var d=l(l({},c.opts),b),e=d.dragClass;a.addEventListener("dragenter",g,!1),a.addEventListener("dragleave",h,!1),a.addEventListener("dragover",i,!1),a.addEventListener("drop",f,!1)}function h(a,b){for(var c=0;c<a.length;c++){var d=a[c];d.extra={nameNoExtension:d.name.substring(0,d.name.lastIndexOf(".")),extension:d.name.substring(d.name.lastIndexOf(".")+1),fileID:c,uniqueID:r(),groupID:b,prettySize:p(d.size)}}}function i(a,b,c){for(var d in b)if(a.match(new RegExp(d)))return"readAs"+b[d];return"readAs"+c}function j(a,e){var f={groupID:q(),files:a,started:new Date};c.output.push(f);var g=a.length,j=function(){--g==0&&(f.ended=new Date,e.on.groupend(f))};h(a,f.groupID),e.on.groupstart(f),a.length||(f.ended=new Date,e.on.groupend(f));for(var k=0;k<a.length;k++){var l=a[k];if(e.accept&&!l.type.match(new RegExp(e.accept))){e.on.skip(l),j();continue}if(e.on.beforestart(l)===!1){e.on.skip(l),j();continue}var m=new b;for(var n=0;n<d.length;n++){var o=d[n];m["on"+o]=function(a,b){return function(c){e.on[a](c,b),a=="loadend"&&j()}}(o,l)}m[i(l.type,e.readAsMap,e.readAsDefault)](l)}}function k(){}function l(a,b){for(var c in b)b[c]&&b[c].constructor&&b[c].constructor===Object?(a[c]=a[c]||{},arguments.callee(a[c],b[c])):a[c]=b[c];return a}function m(a,b){return a.className.match(new RegExp("(\\s|^)"+b+"(\\s|$)"))}function n(a,b){m(a,b)||(a.className+=" "+b)}function o(a,b){if(m(a,b)){var c=new RegExp("(\\s|^)"+b+"(\\s|$)");a.className=a.className.replace(c," ")}}function p(a){var b=["bytes","kb","MB","GB","TB","PB"],c=Math.floor(Math.log(a)/Math.log(1024));return(a/Math.pow(1024,Math.floor(c))).toFixed(2)+" "+b[c]}var b=a.FileReader,c=a.FileReaderJS={enabled:!1,setupInput:f,setupDrop:g,setupClipboard:e,opts:{dragClass:!1,accept:!1,readAsMap:{"image/*":"DataURL","text/*":"Text"},readAsDefault:"BinaryString",on:{loadstart:k,progress:k,load:k,abort:k,error:k,loadend:k,skip:k,groupstart:k,groupend:k,beforestart:k}},output:[]},d=["loadstart","progress","load","abort","error","loadend"];typeof jQuery!="undefined"&&(jQuery.fn.fileReaderJS=function(a){return this.each(function(){$(this).is("input")?f(this,a):g(this,a)})},jQuery.fn.fileClipboard=function(a){return this.each(function(){e(this,a)})});if(!b)return;var q=function(a){return function(){return a++}}(0),r=function(a){return function(){return a++}}(0);c.enabled=!0})(this),window.log=function(){log.history=log.history||[],log.history.push(arguments),this.console&&console.log(Array.prototype.slice.call(arguments))},$(function(){b.init(),c.init(),Generator.init(),a.init()});var a={init:function(){var a=window.grad={alphas:[[0,1],[.5,.1],[1,1]],colors:[[0,{r:0,g:0,b:255,a:1}],[1,{r:0,g:255,b:0,a:1}]]};Generator.loadFromExportable(a),Generator.hardReload()}},b={init:function(){var a={readAsMap:{".*":"DataURL"},dragClass:"filedrop",on:{error:function(){alert("You must run this on a webserver to get results")},load:function(a,b){var c=a.target.result;GradientFinder.fromUrl(c,function(a){if(a){var b=a.toCss();$("#grad").height(150),$("#uploaded-image").attr("src",c),$("#uploaded-image-container").show(),$("#error").hide(),Generator.loadFromExportable(a.toExportable()),Generator.hardReload()}else $("#error").show(),$("#uploaded-image-container").hide()})}}};$("body").fileReaderJS(a).fileClipboard(a),$("#applyBody").click(function(){$(this).is(":checked")?b.applyToBody():b.removeFromBody()})},applyToBody:function(){Generator.applyToBody=!0,Generator.softReload()},removeFromBody:function(){Generator.applyToBody=!1,Generator.softReload()}},c={init:function(){var a=!0;$("#showExamples").click(function(b){b.preventDefault();if(a){for(var c=0;c<=90;c+=5)$("#samples").append("<tr><td><img data-src='gradients/generic/"+c+".png' />"+"<td>"+"<div class='preview'></div>"+"</td>"+"<td>"+"<textarea class='css'></textarea>"+"</td>");$("#samples img").load(function(a){var b=this,c=document.createElement("canvas"),d=c.getContext("2d");c.width=b.width,c.height=b.height,d.drawImage(b,0,0);var e=GradientFinder.fromCanvas(c);if(e){var f=$(b).parent().siblings().find(".preview"),g=$(b).parent().siblings().find(".css");f.attr("style",e.toCss()),g.val(e.toCss())}}),$("#samples img").attr("src",function(){return $(this).data("src")})}a=!1,$("#example-container").is(":visible")?($("#example-container").hide(),$(this).text("View")):($("#example-container").show(),$(this).text("Hide"))})}};
+window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+$(function() {
+    GradientFinderDemo.init();
+    Samples.init();
+    Generator.init();
+    DefaultGrad.init();
+});
+
+var DefaultGrad = {
+    init: function() {
+        var grad = window.grad = {
+            alphas: [ 
+                [ 0, 1 ],
+                [ 0.5, 0.1 ],
+                [ 1, 1 ]
+            ],
+            colors: [ 
+                [ 0, { r: 0, g: 0, b: 255, a: 1 } ],
+                [ 1, { r: 0, g: 255, b: 0, a: 1 } ],
+            ]        
+        };
+        Generator.loadFromExportable(grad);
+        Generator.hardReload();
+    }
+};
+
+var GradientFinderDemo = {
+    init: function() {
+        var opts = {
+            readAsMap: {
+                '.*': 'DataURL'
+            },
+            dragClass: "filedrop",
+            on: {
+                error: function() {
+                    alert("You must run this on a webserver to get results");
+                },
+                load: function (e, file) {
+                    var data = e.target.result;
+                    GradientFinder.fromUrl(data, function(grad) {
+                        if (grad) {
+                            var css = grad.toCss();
+                            $("#grad").height(150);
+                            $("#uploaded-image").attr("src", data);
+                            $("#uploaded-image-container").show();
+                            $("#error").hide();
+                            Generator.loadFromExportable(grad.toExportable());
+                            Generator.hardReload();
+                        }
+                        else {
+                            $("#error").show();
+                            $("#uploaded-image-container").hide();
+                        }
+                    });
+                }
+            }
+        };
+
+        $("body").fileReaderJS(opts).fileClipboard(opts);
+        
+        $("#applyBody").click(function() {
+            if ($(this).is(":checked")) {
+                GradientFinderDemo.applyToBody();
+            }
+            else {
+                GradientFinderDemo.removeFromBody();
+            }
+        });
+        
+    },
+    
+    applyToBody: function() {
+        Generator.applyToBody = true;
+        Generator.softReload();
+    },    
+    removeFromBody: function() {
+        Generator.applyToBody = false;
+        Generator.softReload();
+    }
+};
+
+// initializes GradientFinder demos
+var Samples = {
+    init: function() {
+    var first = true;
+        $("#showExamples").click(function(e) {
+            e.preventDefault();
+            if (first) {
+                for (var i = 0; i <= 90; i+=5) {
+                    $("#samples").append("<tr>" +
+                        "<td>" +
+                            "<img data-src='gradients/generic/" + i + ".png' />" +
+                        "<td>" +
+                            "<div class='preview'></div>" +
+                        "</td>" +
+                        "<td>" +
+                        "<textarea class='css'></textarea>" +
+                    "</td>");
+                }
+
+                $("#samples img").load(function(e) {
+                    var img = this;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    var grad = GradientFinder.fromCanvas(canvas);
+                    if (grad) {
+                        var preview = $(img).parent().siblings().find(".preview");
+                        var css = $(img).parent().siblings().find(".css");
+                        preview.attr("style", grad.toCss());
+                        css.val(grad.toCss());
+                    }
+                });
+
+                $("#samples img").attr("src", function() {
+                    return $(this).data("src");
+                });
+            }
+
+            first = false;
+            if ($("#example-container").is(":visible")) {
+                $("#example-container").hide();
+                $(this).text("View");
+            }
+            else {
+                $("#example-container").show();
+                $(this).text("Hide");
+            }
+        });
+    }
+}

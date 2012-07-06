@@ -32,11 +32,15 @@ module.exports = function(grunt) {
                 dest: 'compiled/gradientfinder.min.js'
             },
             framework: {
-                src: ['static/jquery-1.7.2.min.js', 'static/jquery-ui.js', 'static/tinycolor.js', 'static/utils.js', 'static/plugin/*.js' ],
+                src: ['static/jquery-1.7.2.min.js', 'static/jquery-ui.js' ],
                 dest: 'compiled/framework.js'
             },
+            plugin: {
+                src: ["static/plugin/filereader.js","static/plugin/tinycolor.js","static/plugin/keymaster.js","static/plugin/prefixfree.js","static/plugin/spectrum.js","static/plugin/ui.anglepicker.js","static/plugin/utils.js","static/plugin/webkit-utils.js","static/gradientgenerator.js"],
+                dest: 'compiled/plugin.js'
+            },
             demo: {
-                src: ['<banner:meta.bannerFinder>', 'static/filereader.js', 'static/demo.js' ],
+                src: [ 'static/demo.js' ],
                 dest: 'compiled/demo.js'
             }
         },
@@ -44,6 +48,10 @@ module.exports = function(grunt) {
             finder: {
                 src: ['<banner:meta.bannerFinder>', '<config:concat.finder.dest>'],
                 dest: 'compiled/gradientfinder.min.js'
+            },
+            plugin: {
+                src: ['<config:concat.plugin.dest>'],
+                dest: 'compiled/plugin.js'
             },
             framework: {
                 src: ['<banner:meta.bannerJquery>', '<config:concat.framework.dest>'],
