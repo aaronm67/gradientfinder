@@ -73,7 +73,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('node-build-script');
     grunt.registerTask("copy", "copy files", function() {
         grunt.file.copy("index_dev.html", "index.html");
-    };
+    });
 
     grunt.registerTask('default', 'lint copy usemin concat min');
 };

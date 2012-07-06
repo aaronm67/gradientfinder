@@ -13,7 +13,6 @@
         <style id="custom-style"></style>
     </head>
     <body>
-
     <header class="clearfix">
         <h1><a href=".">GradientFinder</a></h1>
         <div>
@@ -24,30 +23,23 @@
     </header>
 
     <div class="toolbar clearfix">
-
-            <a href="https://twitter.com/intent/tweet?text=I visited %23gradientfinder to convert an image to a CSS gradient!" class="twitter-share-button">Tweet #gradientfinder</a>
-
-            <div class="alert alert-warning">
-                GradientFinder is a quick way to find a gradient from an image!  <a href='#about'>Read More</a>
-            </div>
+        <a href="https://twitter.com/intent/tweet?text=I visited %23gradientfinder to convert an image to a CSS gradient!" class="twitter-share-button">Tweet #gradientfinder</a>
+        <div class="alert alert-warning">
+            GradientFinder is a quick way to find a gradient from an image!  <a href='#about'>Read More</a>
+        </div>
         <div class="btn-toolbar hide">
-            <div class="btn-group">
-
-            </div>
+            <div class="btn-group"></div>
         </div>
     </div>
 
     <div class="container">
-
         <div class="hero-unit main-section">
             <div id="filedropper">
                 <h3>Drop an image here!</h3>
                 <strong>To find its CSS gradient</strong>
                 <div id="transparent"></div>
             </div>
-            <textarea id="grad">
-
-            </textarea>
+            <textarea id="grad"></textarea>
 
             <form class="form-inline" style="margin-bottom: 0;">
                 <label class="checkbox"><input id="applyBody" type="checkbox" />Preview</label>
@@ -60,14 +52,12 @@
                 Couldn't find a gradient from that image...
             </div>
         </div>
-
-
         <div id="stops-container" class="main-section">
             <h3>Gradient Generator</h3>
 
             <div class='alert alert-info hide'>
-            Move alpha or color stops by dragging them across the track.<br />
-            Click on the track to add a new stop.
+                Move alpha or color stops by dragging them across the track.<br />
+                Click on the track to add a new stop.
             </div>
 
             <div id="gradient-picker">
@@ -98,28 +88,26 @@
             </div>
         </div>
     </div>
-      <div class="container content">
-
-      <a name='about'></a>
-      <div class="row">
+    <div class="container content">
+        <a name='about'></a>
+        <div class="row">
         <div class="span12">
             <h3>About:</h3>
-           <p>
-               Gradient Finder is an entirely in browser way to convert an image to its
-               <a href="http://dev.w3.org/csswg/css3-images/#gradients">CSS gradient</a>.
-               You can also generate CSS gradients and make changes to the files you choose!
-           </p>
-
-           <p>
+            <p>
+                Gradient Finder is an entirely in browser way to convert an image to its
+                <a href="http://dev.w3.org/csswg/css3-images/#gradients">CSS gradient</a>.
+                You can also generate CSS gradients and make changes to the files you choose!
+            </p>
+            <p>
                 It was written by <a href="http://aaronm67.foliotek.me">Aaron Marasco</a> and <a href="http://briangrinstead.com">Brian Grinstead</a>
-           </p>
-           <p>
-                It was (partially) inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>.  The main things that are different about GradientFinder is that it accepts more image types than pngs, it accepts arbitrary angles, and it can <strong>run in your browser</strong>!
-           </p>
+            </p>
+            <p>
+                It was (partially) inspired by <a href="https://github.com/bluesmoon/pngtocss">pngtocss</a>.  The main things that are different about GradientFinder
+                is that it accepts more image types than pngs, it accepts arbitrary angles, and it can <strong>run in your browser</strong>!
+            </p>
         </div>
-       </div>
-
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="span12">
             <h3>Open Source:</h3>
             <p>
@@ -131,23 +119,24 @@
                 <a class="btn btn-primary btn-large" href="https://github.com/aaronm67/gradientfinder">View on Github</a>
             </p>
         </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="span6">
-          <h3>Methods:</h3>
-          <p>The following methods are exposed from the global GradientFinder object.</p>
-          <p>
+            <h3>Methods:</h3>
+            <p>The following methods are exposed from the global GradientFinder object.</p>
+            <p>
 <pre>
 GradientFinder {
     fromUrl: function(url, onload),
     fromCanvas: function(canvas)
 };
 </pre>
+            </p>
         </div>
         <div class="span6">
-          <h3>Returns:</h3>
-           <p>This is the signature of the methods exposed from the return object.</p>
-          <p>
+            <h3>Returns:</h3>
+            <p>This is the signature of the methods exposed from the return object.</p>
+            <p>
 <pre>
 Gradient {
     stops: [ array ],
@@ -155,241 +144,239 @@ Gradient {
     toCss: function() // returns String
 };
 </pre>
-          </p>
-       </div>
-      </div>
-
-      <hr>
-
-      <a name="examples"></a>
-      <h2>Examples</h2>
-      <p>Here you can view a lot of gradient examples.  They don't open until you press the button, because it can be slow to load them all at once!
-      <div><a class="btn btn-primary btn-large" id="showExamples" href="#">View</a>
-      <div id="example-container" class="hide">
-          <p>
-                (left is an image, right is the CSS Gradient of that image)
-          </p>
-          <div class='well'>
-            <table id="samples">
-                <tr>
-                    <td>
-                        <img data-src="gradients/diagonal.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/horizontal.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/linear_rainbow.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/singlehorizontal.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/singlevertical.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/solid.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/vertical.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/transparent.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/cooldiag.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/weirdhoriz.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/weirddiag.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img data-src="gradients/transdiag.png" />
-                    </td>
-                    <td>
-                        <div class="preview"></div>
-                    </td>
-                    <td>
-                        <div class="canvas"></div>
-                    </td>
-                    <td>
-                        <textarea class="css"></textarea>
-                    </td>
-                </tr>
-            </table>
+            </p>
         </div>
     </div>
-</div>
 
-      <hr>
+    <hr>
+    <a name="examples"></a>
+    <h2>Examples</h2>
+    <p>Here you can view a lot of gradient examples.  They don't open until you press the button, because it can be slow to load them all at once!
+    <div>
+        <a class="btn btn-primary btn-large" id="showExamples" href="#">View</a>
+        <div id="example-container" class="hide">
+            <p> (left is an image, right is the CSS Gradient of that image) </p>
+            <div class='well'>
+                <table id="samples">
+                    <tr>
+                        <td>
+                            <img data-src="gradients/diagonal.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/horizontal.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/linear_rainbow.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/singlehorizontal.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/singlevertical.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/solid.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/vertical.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/transparent.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/cooldiag.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/weirdhoriz.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/weirddiag.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img data-src="gradients/transdiag.png" />
+                        </td>
+                        <td>
+                            <div class="preview"></div>
+                        </td>
+                        <td>
+                            <div class="canvas"></div>
+                        </td>
+                        <td>
+                            <textarea class="css"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <hr>
 
     <footer>
         <div class="container">
             <p><a href="https://raw.github.com/aaronm67/gradientfinder/master/LICENSE">&copy; Aaron Marasco &amp; Brian Grinstead 2012</a></p>
         </div>
     </footer>
+</div>
 
-    </div>
+<img id="default-grad" src="gradients/linear_rainbow.png" style="display:none" />
 
-    <img id="default-grad" src="gradients/linear_rainbow.png" style="display:none" />
+<script type="text/javascript" src="gradientfinder.js"></script>
 
-    <script type="text/javascript" src="gradientfinder.js"></script>
+<!--build:js ./compiled/framework.js -->
+<script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="static/jquery-ui.js" ></script>
+<!-- endbuild -->
 
-    <!--build:js ./compiled/framework.js -->
-    <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="static/jquery-ui.js" ></script>
-    <!-- endbuild -->
+<!--build:js ./compiled/plugin.js -->
+<script type="text/javascript" src="static/plugin/filereader.js" ></script>
+<script type="text/javascript" src="static/plugin/tinycolor.js" ></script>
+<script type="text/javascript" src="static/plugin/keymaster.js" ></script>
+<script type="text/javascript" src="static/plugin/prefixfree.js" ></script>
+<script type="text/javascript" src="static/plugin/spectrum.js" ></script>
+<script type="text/javascript" src="static/plugin/ui.anglepicker.js" ></script>
+<script type="text/javascript" src="static/plugin/utils.js" ></script>
+<script type="text/javascript" src="static/plugin/webkit-utils.js" ></script>
+<!-- endbuild -->
 
-    <!--build:js ./compiled/plugin.js -->
-    <script type="text/javascript" src="static/plugin/filereader.js" ></script>
-    <script type="text/javascript" src="static/plugin/tinycolor.js" ></script>
-    <script type="text/javascript" src="static/plugin/keymaster.js" ></script>
-    <script type="text/javascript" src="static/plugin/prefixfree.js" ></script>
-    <script type="text/javascript" src="static/plugin/spectrum.js" ></script>
-    <script type="text/javascript" src="static/plugin/ui.anglepicker.js" ></script>
-    <script type="text/javascript" src="static/plugin/utils.js" ></script>
-    <script type="text/javascript" src="static/plugin/webkit-utils.js" ></script>
-    <!-- endbuild -->
+<script type="text/javascript" src="./compiled/gradient.js"></script>
 
-    <script type="text/javascript" src="./compiled/gradient.js"></script>
+<!-- build:js ./compiled/demo.js -->
+<script type="text/javascript" src="static/gradientgenerator.js"></script>
+<script type="text/javascript" src="static/demo.js"></script>
+<!-- endbuild -->
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32456048-1']);
+    _gaq.push(['_trackPageview']);
 
-    <!-- build:js ./compiled/demo.js -->
-    <script type="text/javascript" src="static/gradientgenerator.js"></script>
-    <script type="text/javascript" src="static/demo.js"></script>
-    <!-- endbuild -->
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-32456048-1']);
-        _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
 
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
 </body>
 </html>
