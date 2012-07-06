@@ -3,7 +3,12 @@
     <head>
         <title>GradientFinder - Convert your Images into CSS Gradients</title>
         <meta name="Description" content="An entirely in browser way to convert an image to its CSS3 Gradient" />
-        <link rel="stylesheet" href="compiled/style.css">
+        <!-- build:css compiled/demo.css -->
+        <link rel="stylesheet" type="text/css" href="static/ui.anglepicker.css" />
+        <link rel="stylesheet" type="text/css" href="static/gradient.css" />
+        <link rel="stylesheet" type="text/css" href="static/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="static/style.css" />
+        <!-- endbuild -->
 
         <style id="custom-style"></style>
     </head>
@@ -182,7 +187,7 @@ Gradient {
                 </tr>
                 <tr>
                     <td>
-                        <img data-src="gradients/singlehorizontal.png" />
+                        <img data-src="gradients/horizontal.png" />
                     </td>
                     <td>
                         <div class="preview"></div>
@@ -351,11 +356,30 @@ Gradient {
 
     <img id="default-grad" src="gradients/linear_rainbow.png" style="display:none" />
 
-    <script type="text/javascript" src="./gradientfinder.js"></script>
-    <script src="./compiled/framework.js"></script>
-    <script src="./compiled/plugin.js"></script>
-    <script src="./compiled/gradient.js"></script>
-    <script src="./compiled/demo.js"></script>
+    <script type="text/javascript" src="gradientfinder.js"></script>
+
+    <!--build:js ./compiled/framework.js -->
+    <script type="text/javascript" src="static/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="static/jquery-ui.js" ></script>
+    <!-- endbuild -->
+
+    <!--build:js ./compiled/plugin.js -->
+    <script type="text/javascript" src="static/plugin/filereader.js" ></script>
+    <script type="text/javascript" src="static/plugin/tinycolor.js" ></script>
+    <script type="text/javascript" src="static/plugin/keymaster.js" ></script>
+    <script type="text/javascript" src="static/plugin/prefixfree.js" ></script>
+    <script type="text/javascript" src="static/plugin/spectrum.js" ></script>
+    <script type="text/javascript" src="static/plugin/ui.anglepicker.js" ></script>
+    <script type="text/javascript" src="static/plugin/utils.js" ></script>
+    <script type="text/javascript" src="static/plugin/webkit-utils.js" ></script>
+    <!-- endbuild -->
+
+    <script type="text/javascript" src="./compiled/gradient.js"></script>
+
+    <!-- build:js ./compiled/demo.js -->
+    <script type="text/javascript" src="static/gradientgenerator.js"></script>
+    <script type="text/javascript" src="static/demo.js"></script>
+    <!-- endbuild -->
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-32456048-1']);

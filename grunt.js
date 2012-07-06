@@ -20,34 +20,30 @@ module.exports = function(grunt) {
         staging: staging,
         output: output,
         usemin: {
-            files: ['dist/index.html']
+            files: ['index.html']
         },
         exclude: '.git .gitignore build/** node_modules/** grunt.js package.json *.md'.split(' '),
-        mkdirs: {
-            staging: '<config:exclude>',
-            output: '<config:exclude>'
-        },
         lint: {
             files: ['grunt.js', 'js/**/*.js', 'test/**/*.js']
         },
         concat: {
             framework: {
                 src: ['<banner:meta.bannerJquery>', 'static/jquery-1.7.2.min.js', 'static/jquery-ui.js', 'static/tinycolor.js', 'static/utils.js', 'static/plugin/*.js' ],
-                dest: 'dist/compiled/framework.js'
+                dest: 'compiled/framework.js'
             },
             demo: {
                 src: ['<banner:meta.bannerFinder>', 'static/filereader.js', 'static/demo.js' ],
-                dest: 'dist/compiled/demo.js'
+                dest: 'compiled/demo.js'
             }
         },
         min: {
             framework: {
                 src: ['<banner:meta.bannerJquery>', '<config:concat.framework.dest>'],
-                dest: 'dist/compiled/framework.js'
+                dest: 'compiled/framework.js'
             },
             demo: {
                 src: ['<banner:meta.bannerFinder>', '<config:concat.demo.dest>'],
-                dest: 'dist/compiled/demo.js'
+                dest: 'compiled/demo.js'
             }
         },
         jshint: {
@@ -75,12 +71,9 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('node-build-script');
-    grunt.registerTask("copy", "copy files",  function() {
-        var files = grunt.file.expandFiles([ "img/*", "static/*",  "gradientfinder.js", "index.html" ]);
-        files.forEach(function(file) {
-            grunt.file.copy(file, "dist/" + file);
-        });
-    });
+    grunt.registerTask("copy", "copy files", function() {
+        grunt.file.copy("index_dev.html", "index.html");
+    };
 
     grunt.registerTask('default', 'lint copy usemin concat min');
 };
