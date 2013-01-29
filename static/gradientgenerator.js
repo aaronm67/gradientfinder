@@ -174,11 +174,13 @@ var Generator = {
         var fullCSS = PrefixFree.prefixCSS(rules.join(""));
         
         // Background CSS doesn't use PrefixFree, as this is text meant to be copy/pasted
+        var w3cCss = currentGradient.toW3cCSS();
+
         var backgroundCss = "background: -webkit-" + css + ";\n" +
             "background: -o-" + css + ";\n" +
             "background: -ms-" + css + ";\n" +
             "background: -moz-" + css + ";\n" +
-            "background: " + css + ";\n";
+            "background: " + w3cCss + ";\n";
 
         $("#grad").val(backgroundCss);
         $("#filedropper").attr("style", backgroundCss);
