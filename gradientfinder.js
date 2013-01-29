@@ -128,7 +128,7 @@
         });
 
         var css = this.angle + "deg, " + stops.join(",");
-        var w3cAngle = Math.abs(old - 450) % 360;
+        var w3cAngle = Math.abs(this.angle - 450) % 360;
         var w3cCss = w3cAngle + "deg, " + stops.join(",");
 
         return "background: -webkit-linear-gradient(" + css + ");\n" +

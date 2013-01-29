@@ -37,6 +37,19 @@ var GradientFinderDemo = {
                 },
                 load: function (e, file) {
                     var data = e.target.result;
+
+                    GradientFinder.Gradient.prototype.toExportable = function() {
+                        return { 
+                            angle: this.angle,
+                            alphas: [],
+                            colors: this.stops.map(function(s) {
+                                return [
+                                    s.idx, { r: s.color.r, g: s.color.g, b: s.color.b, a: s.color.a }
+                                ];
+                            })
+                        };
+                    };
+
                     GradientFinder.fromUrl(data, function(grad) {
                         if (grad) {
                             var css = grad.toCss();
