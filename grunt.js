@@ -91,5 +91,5 @@ module.exports = function(grunt) {
         grunt.file.copy("index_dev.html", "index.html");
     });
 
-    grunt.registerTask('default', 'lint copy concat min usemin');
+    grunt.registerTask('default', 'lint copy concat usemin');
 };

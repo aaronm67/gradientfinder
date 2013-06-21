@@ -38,13 +38,19 @@ var GradientFinderDemo = {
                 load: function (e, file) {
                     var data = e.target.result;
 
+
+                    var round = function (num, digits) {
+                        digits = digits || 0;
+                        return Math.round(num * Math.pow(10, digits)) / Math.pow(10, digits);
+                    };
+
                     GradientFinder.Gradient.prototype.toExportable = function() {
                         return { 
                             angle: this.angle,
                             alphas: [],
                             colors: this.stops.map(function(s) {
                                 return [
-                                    s.idx, { r: s.color.r, g: s.color.g, b: s.color.b, a: s.color.a }
+                                    s.idx, { r: s.color.r, g: s.color.g, b: s.color.b, a: round(s.color.a / 255, 3) }
                                 ];
                             })
                         };
